@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+
+  "name": "책 it out",
+  "description": "쿠팡의 도서 구매를 돕기 위한 크롬 익스텐션입니다. Yes24에서 마음에 드는 책 상품 페이지에 들어가신 후 등록 버튼을 눌러주세요.\n 해당 익스텐션을 사용하기 위해서는 쿠팡 그룹웨어 계정으로 로그인 하셔야 합니다.",
+  "version": "1.0",
+
+  "browser_action": {
+    "default_icon": "book.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "https://www.yes24.com/",
+    "identity","identity.email"
+  ]
+}
