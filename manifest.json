@@ -6,8 +6,8 @@
   "version": "1.0",
 
   "browser_action": {
-    "default_icon": "book.png",
-    "default_popup": "popup.html"
+    "default_icon": "img/book.png",
+    "default_popup": "html/popup.html"
   },
   "permissions": [
     "activeTab",

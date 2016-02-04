@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function onWindowLoad() {
     chrome.tabs.executeScript(null, {
-        file: "getPrice.js"
+        file: "js/getPrice.js"
         }, function() {
             if (chrome.extension.lastError) {
                 document.body.innerText = 'There was an error injecting script : \n' + chrome.extension.lastError.message;
