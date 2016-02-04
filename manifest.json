@@ -6,7 +6,7 @@
   "version": "1.0",
 
   "browser_action": {
-    "default_icon": "img/book.png",
+    "default_icon": "img/check_it_out.png",
     "default_popup": "html/popup.html"
   },
   "permissions": [
