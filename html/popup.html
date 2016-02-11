@@ -6,6 +6,7 @@
  -->
 <html>
   <head>
+    <meta charset="utf-8">
     <title>책 it out</title>
     <style>
       body {
@@ -26,13 +27,17 @@
         max-width: 400px;
       }
     </style>
-
     <script src="../js/jquery.min.js"></script>
     <script src="../js/popup.js"></script>
-    <script src="../js/checkitout.js"></script>
-    
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
   </head>
   <body>
+    <input type="hidden" name="input_user_email" />
+    <input type="hidden" name="input_price" />
+    <input type="hidden" name="input_book_name" />
+    <input type="hidden" name="input_isbn13" />
+    <input type="hidden" name="input_url" />
+
     <div id="user_email"></div>
     <div id="price"></div>
     <div id="book_name"></div>
@@ -40,6 +45,7 @@
     <div id="url"></div>
     <img id="image-result" hidden>
     <a href="local.coupang.com:9999/login_google" target="_blank" >login</a>
+    <button type="button" id="addCart" class="btn btn-default">즐겨찾기 등록</button>
   </body>
 </html>
 
