@@ -1,14 +1,14 @@
 function makeRow(index, cookieBook) {
     tableRow = "";
     if(index %2 == 0) {
-        tableRow += '<tr class="even">'; 
+        tableRow += '<tr class="even" id="' + cookieBook.isbn13 + '">'; 
     } else {
-        tableRow += '<tr class="odd">';
+        tableRow += '<tr class="odd" id="' + cookieBook.isbn13 + '">';
     }
 
     tableRow += '<td>';
     tableRow += '<input type="hidden" class="input_json" value="' + JSON.stringify(cookieBook) + '" />';
-    tableRow += '<input type="checkbox" class="checkRow">';
+    tableRow += '<input type="checkbox" class="check_row" value="' + cookieBook.isbn13 + '" />';
     tableRow += '</td><td>';
     tableRow += cookieBook.name;
     tableRow += '</td><td>';
@@ -28,7 +28,7 @@ function makeRow(index, cookieBook) {
 }
 
 function focusOrCreateTab(url) {
-  chrome.windows.getAll({"populate":true}, function(windows) {
+  chrome.windows.getAll({'populate':true}, function(windows) {
     var existing_tab = null;
     for (var i in windows) {
       var tabs = windows[i].tabs;
@@ -41,15 +41,24 @@ function focusOrCreateTab(url) {
       }
     }
     if (existing_tab) {
-      chrome.tabs.update(existing_tab.id, {"selected":true});
+      chrome.tabs.update(existing_tab.id, {'selected':true});
     } else {
-      chrome.tabs.create({"url":url, "selected":true});
+      chrome.tabs.create({'url':url, 'selected':true});
     }
   });
 }
 
+
+function setCheckAll() {
+    var isAllChecked = true;
+    $('input.check_row').each(function() {
+        isAllChecked = isAllChecked && $(this).is(':checked');
+    });
+    console.log(isAllChecked);
+    $('input#check_all').prop('checked', isAllChecked);
+}
+
 $(document).ready( function() {
-    
     chrome.cookies.get({'name':'cartList', 'url':'http://local.coupang.com/'}, function(cookie) {
         if(cookie != null) {
             cookieBookList = JSON.parse(cookie.value);
@@ -64,9 +73,28 @@ $(document).ready( function() {
         }
 
         tbodyParent.find('button.button_url').each(function() {
-                $(this).click(function() {
-                    focusOrCreateTab($(this).val());
-                });
+            $(this).click(function() {
+                focusOrCreateTab($(this).val());
             });
+        });
+
+        $('input#check_all').click(function() {
+            var isChecked = $(this).is(':checked') ? true : false;
+            $('input.check_row').each(function() {
+                $(this).prop('checked',isChecked);
+            });
+        });
+
+        $('input.check_row').click(function() {
+            var isChecked = $(this).is(':checked') ? true : false;
+            console.log(isChecked);
+            if(!isChecked) {
+                $('input#check_all').prop('checked', false);
+            } else {
+                setCheckAll();   
+            }
+        });
     });
+
+
 });
