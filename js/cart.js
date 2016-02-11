@@ -1,28 +1,28 @@
-function makeRow(index, cookieBook) {
+function makeRow(index, book) {
     tableRow = "";
     if(index %2 == 0) {
-        tableRow += '<tr class="even" id="' + cookieBook.isbn13 + '">'; 
+        tableRow += '<tr class="even" id="' + book.isbn13 + '">'; 
     } else {
-        tableRow += '<tr class="odd" id="' + cookieBook.isbn13 + '">';
+        tableRow += '<tr class="odd" id="' + book.isbn13 + '">';
     }
 
     tableRow += '<td>';
-    tableRow += '<input type="hidden" class="input_json" value="' + JSON.stringify(cookieBook) + '" />';
-    tableRow += '<input type="checkbox" class="check_row" value="' + cookieBook.isbn13 + '" />';
+    tableRow += '<input type="hidden" class="input_json" value="' + book.isbn13 + '" />';
+    tableRow += '<input type="checkbox" class="check_row" value="' + book.isbn13 + '" />';
     tableRow += '</td><td>';
-    tableRow += cookieBook.name;
+    tableRow += book.name;
     tableRow += '</td><td>';
-    tableRow += cookieBook.price;
+    tableRow += book.price;
     tableRow += '</td><td>';
-    if(cookieBook.isEbook) {
+    if(book.isEbook) {
         tableRow += "이북";
     } else {
         tableRow += "서적";
     }
     tableRow += '</td><td>';
-    tableRow += cookieBook.createdDate;
+    tableRow += book.createdDate;
     tableRow += '</td><td>'; 
-    tableRow += '<button type="button" class="button_url" value="' + cookieBook.url +'">보기</button></td>';
+    tableRow += '<button type="button" class="button_url" value="' + book.url +'">보기</button></td>';
 
     return tableRow;
 }
@@ -58,17 +58,18 @@ function setCheckAll() {
     $('input#check_all').prop('checked', isAllChecked);
 }
 
-$(document).ready( function() {
-    chrome.cookies.get({'name':'cartList', 'url':'http://local.coupang.com/'}, function(cookie) {
-        if(cookie != null) {
-            cookieBookList = JSON.parse(cookie.value);
+$(document).ready( function() { 
+    CartStorage.load(function(data) {
+        if(data != null) {
+            bookList = data;
         } else {
-            cookieBookList = [];
+            bookList = [];
         }
+
         var tbodyParent = $('tbody.parent_tr');
     
-        for(i = 0, len = cookieBookList.length; i < len ; ++i) {
-            var row = makeRow(i, cookieBookList[i]);
+        for(i = 0, len = bookList.length; i < len ; ++i) {
+            var row = makeRow(i, bookList[i]);
             tbodyParent.append(row);
         }
 
@@ -95,6 +96,5 @@ $(document).ready( function() {
             }
         });
     });
-
 
 });

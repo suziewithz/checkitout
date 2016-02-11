@@ -101,13 +101,13 @@ $(document).ready( function() {
         cookieBook.createdDate = date.getFullYear() + '년 ' + date.getMonth() + "월 " + date.getDate() + "일 " + date.getHours() + "시 " + date.getMinutes() + "분";
         isNeedToAdd = true;
 
-        chrome.cookies.get({"name":"cartList", "url":"http://local.coupang.com/"}, function(cookie) {
-            if(cookie != null) {
-                cookieBookList = JSON.parse(cookie.value);
+        CartStorage.load(function(data) {
+            if(data!=null) {
+                cookieBookList = data;
             } else {
                 cookieBookList = [];
             }
-            
+
             for(i = 0 , len = cookieBookList.length; i < len; ++i) {
                 if(cookieBookList[i].isbn13 == cookieBook.isbn13) {
                     isNeedToAdd = false;
@@ -118,7 +118,7 @@ $(document).ready( function() {
 
             if(isNeedToAdd) {
                 cookieBookList.push(cookieBook);
-                chrome.cookies.set({"name": "cartList", "url": "http://local.coupang.com/", "value": JSON.stringify(cookieBookList)}, function (cookie) {});
+                CartStorage.setValue(cookieBookList, function() {});
             }
         });
     });
