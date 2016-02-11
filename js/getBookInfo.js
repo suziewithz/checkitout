@@ -1,15 +1,29 @@
 function get_book_name(document) {
-	var title = document.getElementById("title");
-	var h1 = title.getElementsByTagName("h1")[0].getElementsByTagName("a")[0].innerHTML;
-	var subtitle = title.getElementsByClassName("subtitle")[0].innerHTML;
-	var ret = h1 + subtitle
-	return ret
+	var title = $('#title > h1 > a').text();
+	$('#title').find('.subtitle').each( function() {
+		title = title + $(this).text();
+	});
+	return title;
 }
 
 function get_price(document) {
-	var productInfos = document.getElementsByClassName("tbGoodsInfo firstTb");
-	var price = productInfos[0].getElementsByClassName("yes_b")
-	return price[0].innerHTML
+	var price = "";
+	$('em.yes_b').each(function(index) {
+		if(index==0) {
+			price = $(this).text();
+		}
+	});
+	return price;
+}
+
+function get_ebook_price(document) {
+	var price = "";
+	$('em.yes_b').each(function(index) {
+		if(index==1) {
+			price = $(this).text();
+		}
+	});
+	return price;
 }
 
 function get_url() {
@@ -24,6 +38,11 @@ function getISBN13(document) {
 chrome.extension.sendMessage({
     action: "getPrice",
     source: get_price(document)
+});
+
+chrome.extension.sendMessage({
+	action: "getEbookPrice",
+	source: get_ebook_price(document)
 });
 
 chrome.extension.sendMessage({
