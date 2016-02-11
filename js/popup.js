@@ -123,4 +123,8 @@ $(document).ready( function() {
     $('button#goToCart').click(function() {
         $(location).attr('href','cart.html');
     });
+
+    $('button#goToHistory').click(function() {
+        $(location).attr('href','history.html');
+    });
 });
