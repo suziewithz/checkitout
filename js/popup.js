@@ -25,6 +25,18 @@ function renderUrl(url) {
     $('input[name="input_url"]').val(url);
 }
 
+function renderEbookPrice(ebookPrice) {
+    if(ebookPrice == "") {
+        $('input[name="input_ebook_price"]').val(0);   
+    } else {
+        $('#ebook_price').text("ebook price: " + ebookPrice + "원")
+        afterReplace = ebookPrice.replace(/,/g,"");
+        afterReplace = afterReplace.replace(/원/g, "");
+        $('input[name="input_ebook_price"]').val(afterReplace);   
+    }
+    
+}
+
 document.addEventListener('DOMContentLoaded', function() {
 	chrome.identity.getProfileUserInfo(function(userInfo) {
 		renderUserInfo(userInfo.email);
@@ -67,7 +79,13 @@ chrome.extension.onMessage.addListener(function(request, sender) {
         renderISBN13(request.source);
     }
 });
-
+/*
+chrome.extension.onMessage.addListener(function (request, sender) {
+    if (request.action == "getEbookPrice") {
+        renderEbookPrice(request.source);
+    }
+});
+*/
 
 $(document).ready( function() {
     
@@ -75,6 +93,7 @@ $(document).ready( function() {
         cookieBook = {};
         cookieBook.name = $('input[name="input_book_name"]').val();
         cookieBook.price = $('input[name="input_price"]').val();
+        cookieBook.ebookPrice= $('input[name="input_ebook_price"]').val();
         cookieBook.isbn13 = $('input[name="input_isbn13"]').val();
         cookieBook.url = $('input[name="input_url"]').val();
         isNeedToAdd = true;
@@ -99,5 +118,13 @@ $(document).ready( function() {
                 chrome.cookies.set({"name": "cartList", "url": "https://www.yes24.com/", "value": JSON.stringify(cookieBookList)}, function (cookie) {});
             }
         });
+    });
+
+    $('button#goToCart').click(function() {
+        $(location).attr('href','cart.html');
+    });
+
+    $('button#goToHistory').click(function() {
+        $(location).attr('href','history.html');
     });
 });
