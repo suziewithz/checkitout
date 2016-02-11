@@ -14,7 +14,9 @@
     "activeTab",
     "https://www.yes24.com/",
     "identity","identity.email",
-    "cookies"
+    "cookies",
+    "notifications",
+    "http://local.coupang.com/"
   ],
   "content_scripts": [
     {
@@ -24,5 +26,6 @@
       "js": ["js/jquery.min.js", "js/getBookInfo.js","js/checkitout.js"]
     }
   ],
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self' blob: filesystem: chrome-extension-resource:"
+
 }
