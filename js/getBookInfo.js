@@ -35,6 +35,11 @@ function getISBN13(document) {
 	return isbn13
 }
 
+function getImg() {
+	var imgUrl = $('#mainImage').attr('src');
+	return imgUrl
+}
+
 chrome.extension.sendMessage({
     action: "getPrice",
     source: get_price(document)
@@ -58,4 +63,9 @@ chrome.extension.sendMessage({
 chrome.extension.sendMessage({
     action: "getISBN13",
     source: getISBN13(document)
+});
+
+chrome.extension.sendMessage({
+	action: "getImg",
+	source: getImg()
 });

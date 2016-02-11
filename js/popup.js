@@ -4,14 +4,14 @@ function renderUserInfo(userEmail) {
 }
 
 function renderPrice(priceText) {
-	$('#price').text("price: " + priceText + "원")
+	$('#price').text(priceText + "원")
     afterReplace = priceText.replace(/,/g,"");
     afterReplace = afterReplace.replace(/원/g, "");
     $('input[name="input_price"]').val(afterReplace);
 }
 
 function renderBookName(bookText) {
-    $('#book_name').text("book name : " + bookText);
+    $('#book_name').text(bookText);
     $('input[name="input_book_name"]').val(bookText);
 }
 	

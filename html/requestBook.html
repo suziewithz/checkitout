@@ -3,7 +3,7 @@
   <head>
     <style>
       body {
-        min-width : 500px;
+        min-width : 454px;
       }
     </style>
     <meta charset="utf-8">
@@ -45,59 +45,64 @@
     material.blue-orange.min.css
     material.purple-indigo.min.css
     -->
-    <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-pink.min.css">
 
     <!-- Material Design icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <!-- Your styles -->
     <link rel="stylesheet" href="../css/default.css">
+    <link rel="stylesheet" href="../css/dummy-material.css">
 
   </head>
-  <body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+  <body class="mdl-demo mdl-base">
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-      <main class="mdl-layout__content">
-        <div class="login-box is-active" id="overview">
-          <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-            <div class="mdl-card mdl-cell mdl-cell--12-col">
-              <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
-                <h4 class="mdl-cell mdl-cell--12-col">Details</h4>
-                <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
-                  <div class="section__circle-container__circle mdl-color--primary"></div>
-                </div>
-                <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
-                  <h5>Lorem ipsum dolor sit amet</h5>
-                  Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Duis nulla tempor do aute et eiusmod velit exercitation nostrud quis <a href="#">proident minim</a>.
-                </div>
-                <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
-                  <div class="section__circle-container__circle mdl-color--primary"></div>
-                </div>
-                <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
-                  <h5>Lorem ipsum dolor sit amet</h5>
-                  Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Duis nulla tempor do aute et eiusmod velit exercitation nostrud quis <a href="#">proident minim</a>.
-                </div>
-                <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
-                  <div class="section__circle-container__circle mdl-color--primary"></div>
-                </div>
-                <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
-                  <h5>Lorem ipsum dolor sit amet</h5>
-                  Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Duis nulla tempor do aute et eiusmod velit exercitation nostrud quis <a href="#">proident minim</a>.
-                </div>
-              </div>
-              <div class="mdl-card__actions">
-                <a href="#" class="mdl-button">Read our features</a>
+      <main class="mdl-layout__content mdl-color-text--grey-600">
+        <div class="login-box mdl-grid is-active" id="overview">
+
+          <div class="demo-card-image mdl-card mdl-shadow--2dp mdl-cell mdl-cell--3-col">
+            <div class="mdl-card__title mdl-card--expand padding-zero">
+              <img id="mainImage"/>
+            </div>
+          </div>
+
+          <div class="demo-card-event mdl-card mdl-shadow--2dp mdl-cell mdl-cell--5-col">
+            <div class="mdl-card__title mdl-card--expand">
+              <h4 id="book_name">
+              </h4>
+            </div>
+
+            <div class="mdl-card__title mdl-card--expand">
+              <div id="price">
               </div>
             </div>
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="btn2">
-              <i class="material-icons">more_vert</i>
-            </button>
-            <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn2">
-              <li class="mdl-menu__item">Lorem</li>
-              <li class="mdl-menu__item" disabled>Ipsum</li>
-              <li class="mdl-menu__item">Dolor</li>
-            </ul>
-          </section>
+
+            <div id="btn_request_book" class="mdl-card__actions mdl-card--borde mdl-book-request-bottom mdl-button--accent mdl-button mdl-button--colored mdl-book-bottom-menu">
+              <a class="mdl-button mdl-js-button mdl-book-request-bottom-text">
+                Send Request
+              </a>
+              <div class="mdl-layout-spacer"></div>
+              <i class="material-icons">keyboard_arrow_right</i>
+            </div>
+          </div>
+
+          <div class="mdl-card__actions mdl-card--border mdl-bottom-menu">
+            <div class="bottom-menu-float">
+
+              <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                보관함 보기
+              </a>
+              <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                목록 보기
+              </a>
+            </div>
+          </div>
         </div>
+
+        <div id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
+          <div class="mdl-snackbar__text"></div>
+          <button class="mdl-snackbar__action" type="button"></button>
+        </div>
+
       </main>
     </div>
 
@@ -107,7 +112,7 @@
     <script src="../js/jquery.min.js"></script>
     <script src="../js/popup.js"></script>
 
-    <script src="../js/checkitout-signin.js"></script>
+    <script src="../js/checkitout-request-book.js"></script>
 
   </body>
 </html>
