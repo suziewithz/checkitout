@@ -14,7 +14,7 @@ checkitout.check_session = {
 					if (result != null) {
 						var rcode = result.rcode;
 						if(rcode == 'RET0000'){
-							$(location).attr('href', '/html/default.html');
+							$(location).attr('href', '/html/requestBook.html');
 						}
 						else{
 							$(location).attr('href', '/html/signin.html');

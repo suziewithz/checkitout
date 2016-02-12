@@ -29,5 +29,9 @@ export.sql
 .DS_Store
 node_modules/
 npm-debug.log
+<<<<<<< HEAD
 *.map
 .idea/workspace.xml
+=======
+*.map
+>>>>>>> book-request-page
