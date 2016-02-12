@@ -28,33 +28,7 @@ checkitout.request_book = {
 	addEvent: function(){
 		var that = checkitout.request_book;
 		$('button#addCart').click(function() {
-			//cookieBook.name = $('input[name="input_book_name"]').val();
-			//cookieBook.price = $('input[name="input_price"]').val();
-			//cookieBook.ebookPrice= $('input[name="input_ebook_price"]').val();
-			//cookieBook.isbn13 = $('input[name="input_isbn13"]').val();
-			//cookieBook.url = $('input[name="input_url"]').val();
-			//isNeedToAdd = true;
-			//
-			//chrome.cookies.get({"name":"cartList", "url":"https://www.yes24.com/"}, function(cookie) {
-			//	if(cookie != null) {
-			//		cookieBookList = JSON.parse(cookie.value);
-			//	} else {
-			//		cookieBookList = [];
-			//	}
-			//
-			//	for(i = 0 , len = cookieBookList.length; i < len; ++i) {
-			//		if(cookieBookList[i].isbn13 == cookieBook.isbn13) {
-			//			isNeedToAdd = false;
-			//			console.log("already added");
-			//			break;
-			//		}
-			//	}
-			//
-			//	if(isNeedToAdd) {
-			//		cookieBookList.push(cookieBook);
-			//		chrome.cookies.set({"name": "cartList", "url": "https://www.yes24.com/", "value": JSON.stringify(cookieBookList)}, function (cookie) {});
-			//	}
-			//});
+			
 		});
 
 		var showToastButton = document.querySelector('#btn_request_book');
@@ -75,8 +49,32 @@ checkitout.request_book = {
 			}
 		});
 
-		$('#btn_cart_book').click(function(){
+		$('#btn_go_to_cart').click(function(){
+			$(location).attr('href', 'cart.html');
+		});
 
+		$('#btn_cart_book').click(function(){
+			var date = new Date();
+	        checkitout.request_book.cookieBook.createdDate = date.getFullYear() + '년 ' + date.getMonth() + "월 " + date.getDate() + "일 " + date.getHours() + "시 " + date.getMinutes() + "분";
+	        cartStorage.addItem(checkitout.request_book.cookieBook, function(data) {
+	            if($.isEmptyObject(data)) {
+					message = {
+						message: checkitout.request_book.cookieBook.bookName +' is added to cart',
+						timeout: 800,
+						actionText: 'done',
+						actionHandler: null,
+					};
+					snackbarContainer.MaterialSnackbar.showSnackbar(message);
+	            } else {
+					message = {
+						message: checkitout.request_book.cookieBook.bookName +' is already added',
+						timeout: 800,
+						actionText: 'done',
+						actionHandler: null,
+					};
+					snackbarContainer.MaterialSnackbar.showSnackbar(message);
+	            }
+	        });
 		});
 
 		$('#btn_order_book').click(function(){
