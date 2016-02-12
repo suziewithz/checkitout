@@ -2,7 +2,6 @@ checkitout.request_book = {
 
 	baseUrl : 'http://local.coupang.com:9999',
 	cookieBook : {},
-	availableCredit : 1000,
 
 	init: function(){
 
@@ -60,16 +59,19 @@ checkitout.request_book = {
 
 		var showToastButton = document.querySelector('#btn_request_book');
 		var snackbarContainer = document.querySelector('#demo-toast-example');
+		var $btnRequestBookIcon = $('#btn_request_book_icon');
 
 		showToastButton.addEventListener('click', function() {
 			var $parentBox = $(".parent-box");
 			if($parentBox.hasClass('moved')){
 				$parentBox.removeClass('moved')
 				$parentBox.animate({ "left": "+=168px" }, "fast" );
+				$btnRequestBookIcon.text('keyboard_arrow_right')
 			}
 			else{
 				$parentBox.addClass('moved')
 				$parentBox.animate({ "left": "-=168px" }, "fast" );
+				$btnRequestBookIcon.text('keyboard_arrow_left')
 			}
 		});
 
@@ -80,14 +82,15 @@ checkitout.request_book = {
 		$('#btn_order_book').click(function(){
 			var data, handler;
 			var price = parseInt(that.cookieBook.price);
+			var availableCredit = checkitout.member.credit;
 
-			if(price > that.availableCredit){
+			if(price > availableCredit){
 				handler = function(event) {
 					that.orderBook();
 				};
 
 				data = {
-					message: 'The lack of credit is "' + ((that.availableCredit - price)*-1).format() + ' won"'
+					message: 'The lack of credit is "' + ((availableCredit - price)*-1).format() + ' won"'
 								+ ' - You must contact admin.',
 					timeout: 4000,
 					actionText: 'Force Order',

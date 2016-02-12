@@ -34,9 +34,13 @@ checkitout.check_session = {
 
 	renderText: function(){
 		var teamStr = checkitout.member.teamName;
-		var userStr = checkitout.member.userName;
-		var teamIdStr = '[' + teamStr + '] </br>' + userStr;
+		var userStr = checkitout.member.realName;
+		var nickStr = checkitout.member.nickName;
+		var credit = checkitout.member.credit;
+		var teamIdStr = '[' + teamStr + '] </br>' + userStr + '(' + nickStr + ')';
+
 		$('#team_id_text').append(teamIdStr);
+		$('#credit_amount').append('[Credit] ' + credit.format() + '원');
 	}
 }
 

@@ -1,3 +1,4 @@
+var checkitout = {};
 checkitout.signin = {
 	jsseionId : '',
 	baseUrl : 'http://local.coupang.com:9999',
@@ -6,16 +7,12 @@ checkitout.signin = {
 	},
 
 	addEvent: function(){
-		//$('#test').click(function() {
-		//	checkitout.testpopup();
-		//});
 	},
 
     test: function() {
         $.ajax({
             url: checkitout.signin.baseUrl + '/index',
             method: "GET",
-            //data: { category: category, productName: productName },
             success: function (result, status, xhr) {
                  var ct = xhr.getResponseHeader("content-type") || "";
                  if (ct.indexOf('html') > -1) {
