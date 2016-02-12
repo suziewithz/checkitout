@@ -17,7 +17,8 @@
     "cookies",
     "notifications",
     "http://local.coupang.com/",
-    "storage"
+    "storage",
+    "https://auth-it.coupang.com/"
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
