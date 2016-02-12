@@ -62,13 +62,7 @@ var bookInfo = {
 	yes24: {
 
 		getBookType: function() {
-
-			console.log("type!!!!!!!");
 			var type = $('.rkeyL')[0].innerHTML;
-			console.log(type+"type!!!!!!!");
-
-
-
 			return type;
 		},
 
