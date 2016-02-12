@@ -96,15 +96,18 @@ $(document).ready( function() {
         cookieBook.ebookPrice= $('input[name="input_ebook_price"]').val();
         cookieBook.isbn13 = $('input[name="input_isbn13"]').val();
         cookieBook.url = $('input[name="input_url"]').val();
+        cookieBook.isEbook = false;
+        var date = new Date();
+        cookieBook.createdDate = date.getFullYear() + '년 ' + date.getMonth() + "월 " + date.getDate() + "일 " + date.getHours() + "시 " + date.getMinutes() + "분";
         isNeedToAdd = true;
 
-        chrome.cookies.get({"name":"cartList", "url":"https://www.yes24.com/"}, function(cookie) {
-            if(cookie != null) {
-                cookieBookList = JSON.parse(cookie.value);
+        CartStorage.load(function(data) {
+            if(data!=null) {
+                cookieBookList = data;
             } else {
                 cookieBookList = [];
             }
-            
+
             for(i = 0 , len = cookieBookList.length; i < len; ++i) {
                 if(cookieBookList[i].isbn13 == cookieBook.isbn13) {
                     isNeedToAdd = false;
@@ -115,7 +118,7 @@ $(document).ready( function() {
 
             if(isNeedToAdd) {
                 cookieBookList.push(cookieBook);
-                chrome.cookies.set({"name": "cartList", "url": "https://www.yes24.com/", "value": JSON.stringify(cookieBookList)}, function (cookie) {});
+                CartStorage.setValue(cookieBookList, function() {});
             }
         });
     });

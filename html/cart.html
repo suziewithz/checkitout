@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>책 it out</title>
+    <style>
+      body {
+        width : 800px; min-height:250px;
+        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+        font-size: 100%;
+      }
+      #status {
+        white-space: pre;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 400px;
+      }
+      #price {
+        white-space: pre;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 400px;
+      }
+    </style>
+    <script src="../js/jquery.min.js"></script>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <script src="../js/storage.js"></script>
+    <script src="../js/cart.js"></script>
+  </head>
+  <body>
+    <table class="table table-striped responsive-utilities jambo_table bulk_action">
+      <thead>
+        <tr class="headings">
+          <th>
+            <input type="checkbox" id="check_all" class="flat">
+          </th>
+          <th class="column-title">Title</th>
+          <th class="column-title">price(ebook)</th>
+          <th class="column-title">bookType</th>
+          <th class="column-title">added Date</th>
+          <th class="column-title">Go To URL </th>
+        </tr>
+      </thead>
+      <tbody class="parent_tr">
+      </tbody>
+    </table>
+    <a href="../html/popup.html"> GoGo Home </a>
+    <button id="button_order"> 선택 주문하기 </button>
+    <button id="button_delete"> 선택 삭제하기 </button>
+  </body>
+</html>
+
