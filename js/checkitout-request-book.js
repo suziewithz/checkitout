@@ -90,6 +90,11 @@ checkitout.request_book = {
 		checkitout.request_book.cookieBook.imgUrl = imgUrl;
 	},
 
+	renderBookType: function(type) {
+		$('#bookType').text(type);
+		checkitout.request_book.cookieBook.bookType = type;
+	},
+
 	renderEbookPrice: function(ebookPrice) {
 		if(ebookPrice == "") {
 			$('input[name="input_ebook_price"]').val(0);
@@ -163,5 +168,11 @@ chrome.extension.onMessage.addListener(function(request, sender) {
 chrome.extension.onMessage.addListener(function(request, sender) {
 	if (request.action == "getImg") {
 		checkitout.request_book.renderImg(request.source);
+	}
+});
+
+chrome.extension.onMessage.addListener(function(request, sender) {
+	if (request.action == "getBookType") {
+		checkitout.request_book.renderBookType(request.source);
 	}
 });

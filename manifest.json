@@ -10,10 +10,10 @@
     "default_popup": "html/index.html"
   },
   "permissions": [
-    "tabs",
     "activeTab",
     "https://www.yes24.com/",
-    "identity","identity.email",
+    "identity",
+    "identity.email",
     "cookies",
     "notifications",
     "http://local.coupang.com/"
