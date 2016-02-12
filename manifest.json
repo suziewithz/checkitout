@@ -7,7 +7,7 @@
 
   "browser_action": {
     "default_icon": "img/check_it_out.png",
-    "default_popup": "html/index.html"
+    "default_popup": "html/popup.html"
   },
   "permissions": [
     "activeTab",
@@ -16,7 +16,8 @@
     "identity.email",
     "cookies",
     "notifications",
-    "http://local.coupang.com/"
+    "http://local.coupang.com/",
+    "storage"
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
