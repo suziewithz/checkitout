@@ -55,8 +55,23 @@ checkitout.request_book = {
 			var date = new Date();
 	        checkitout.request_book.cookieBook.createdDate = date.getFullYear() + '년 ' + date.getMonth() + "월 " + date.getDate() + "일 " + date.getHours() + "시 " + date.getMinutes() + "분";
 	        cartStorage.addItem(checkitout.request_book.cookieBook, function(data) {
-	            hello = data;
-	            console.log(hello);
+	            if($.isEmptyObject(data)) {
+					message = {
+						message: checkitout.request_book.cookieBook.bookName +' is added to cart',
+						timeout: 800,
+						actionText: 'done',
+						actionHandler: null,
+					};
+					snackbarContainer.MaterialSnackbar.showSnackbar(message);
+	            } else {
+					message = {
+						message: checkitout.request_book.cookieBook.bookName +' is already added',
+						timeout: 800,
+						actionText: 'done',
+						actionHandler: null,
+					};
+					snackbarContainer.MaterialSnackbar.showSnackbar(message);
+	            }
 	        });
 		});
 
