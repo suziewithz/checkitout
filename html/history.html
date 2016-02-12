@@ -22,7 +22,6 @@
     <link rel="stylesheet" href="../css/history.css">
     <link rel="stylesheet" href="../css/default.css">
     <script src="../js/material.min.js"></script>
-
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 </head>
@@ -70,12 +69,15 @@
                     </tbody>
                 </table>
             </section>
+            <div id="message-toast" class="mdl-js-snackbar mdl-snackbar">
+                <div class="mdl-snackbar__text"></div>
+                <button class="mdl-snackbar__action" type="button"></button>
+            </div>
         </div>
     </main>
 </div>
 
-<script src="../js/jquery.min.js"></script>
-<script src="../js/util/constants.js"></script>
+<script src="../js/lib/require.min.js"></script>
 <script src="../js/history.js"></script>
 
 </body>
