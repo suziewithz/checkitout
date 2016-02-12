@@ -1,12 +1,28 @@
-var checkitout = {};
-
 checkitout.request_book = {
 
 	baseUrl : 'http://local.coupang.com:9999',
 	cookieBook : {},
-	availableCredit : 0,
+	availableCredit : 1000,
 
 	init: function(){
+
+		Number.prototype.format = function(){
+			if(this==0) return 0;
+
+			var reg = /(^[+-]?\d+)(\d{3})/;
+			var n = (this + '');
+
+			while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
+
+			return n;
+		};
+
+		String.prototype.format = function(){
+			var num = parseFloat(this);
+			if( isNaN(num) ) return "0";
+
+			return num.format();
+		};
 		checkitout.request_book.addEvent();
 	},
 
@@ -46,18 +62,48 @@ checkitout.request_book = {
 		var snackbarContainer = document.querySelector('#demo-toast-example');
 
 		showToastButton.addEventListener('click', function() {
-			var data;
-			if(parseInt(that.cookieBook.price) > that.availableCredit){
+			var $parentBox = $(".parent-box");
+			if($parentBox.hasClass('moved')){
+				$parentBox.removeClass('moved')
+				$parentBox.animate({ "left": "+=168px" }, "fast" );
+			}
+			else{
+				$parentBox.addClass('moved')
+				$parentBox.animate({ "left": "-=168px" }, "fast" );
+			}
+		});
+
+		$('#btn_cart_book').click(function(){
+
+		});
+
+		$('#btn_order_book').click(function(){
+			var data, handler;
+			var price = parseInt(that.cookieBook.price);
+
+			if(price > that.availableCredit){
+				handler = function(event) {
+					that.orderBook();
+				};
+
 				data = {
-					message: '크레딧이 ' + that.availableCredit + "원 남았습니다",
-					timeout: 800,
+					message: 'The lack of credit is "' + ((that.availableCredit - price)*-1).format() + ' won"'
+								+ ' - You must contact admin.',
+					timeout: 4000,
+					actionText: 'Force Order',
+					actionHandler: handler
 				};
 				snackbarContainer.MaterialSnackbar.showSnackbar(data);
 			}
 			else{
-				//TODO - do request task
+				that.orderBook();
 			}
 		});
+
+	},
+
+	orderBook: function(){
+		console.log(checkitout.request_book.cookieBook);
 	},
 
 	renderUserInfo: function(userEmail){

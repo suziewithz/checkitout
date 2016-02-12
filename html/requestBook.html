@@ -1,11 +1,6 @@
 <!doctype html>
 <html lang="">
   <head>
-    <style>
-      body {
-        min-width : 454px;
-      }
-    </style>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
@@ -51,53 +46,82 @@
 
     <!-- Your styles -->
     <link rel="stylesheet" href="../css/default.css">
-    <link rel="stylesheet" href="../css/dummy-material.css">
+    <link rel="stylesheet" href="../css/material.min.css">
 
   </head>
   <body class="mdl-demo mdl-base">
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
       <main class="mdl-layout__content mdl-color-text--grey-600">
-        <div class="login-box mdl-grid is-active" id="overview">
 
-          <div class="demo-card-image mdl-card mdl-shadow--2dp mdl-cell mdl-cell--3-col">
-            <div class="mdl-card__title mdl-card--expand padding-zero">
-              <img id="mainImage"/>
-            </div>
-            <div class="mdl-card__actions">
-              <span id="bookType" class="demo-card-image__filename"></span>
-            </div>
-          </div>
+        <div class="parent-box mdl-grid is-active" id="overview">
 
-          <div class="demo-card-event mdl-card mdl-shadow--2dp mdl-cell mdl-cell--5-col">
-            <div class="mdl-card__title mdl-card--expand">
-              <h4 id="book_name">
-              </h4>
-            </div>
-
-            <div class="mdl-card__title mdl-card--expand">
-              <div id="price">
+            <div class="demo-card-image mdl-card mdl-shadow--2dp mdl-cell mdl-cell--3-col">
+              <div class="mdl-card__title mdl-card--expand padding-zero">
+                <img id="mainImage"/>
+              </div>
+              <div class="mdl-card__actions">
+                <span id="bookType" class="demo-card-image__filename"></span>
               </div>
             </div>
 
-            <div id="btn_request_book" class="mdl-card__actions mdl-card--borde mdl-book-request-bottom mdl-button--accent mdl-button mdl-button--colored mdl-book-bottom-menu">
-              <a class="mdl-button mdl-js-button mdl-book-request-bottom-text">
-                Send Request
-              </a>
-              <div class="mdl-layout-spacer"></div>
-              <i class="material-icons">keyboard_arrow_right</i>
-            </div>
-          </div>
+            <div class="demo-card-event mdl-card mdl-shadow--2dp mdl-cell mdl-cell--5-col">
+              <div class="mdl-card__title mdl-card--expand">
+                <h4 id="book_name">
+                </h4>
+              </div>
 
-          <div class="mdl-card__actions mdl-card--border mdl-bottom-menu">
-            <div class="bottom-menu-float">
+              <div class="mdl-card__title mdl-card--expand">
+                <div id="price">
+                </div>
+              </div>
 
-              <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                보관함 보기
-              </a>
-              <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                목록 보기
-              </a>
+              <div id="btn_request_book" class="mdl-card__actions mdl-card--borde mdl-book-request-bottom mdl-button--accent mdl-button mdl-button--colored mdl-book-bottom-menu">
+                <a class="mdl-button mdl-js-button mdl-book-request-bottom-text">
+                  Request
+                </a>
+                <div class="mdl-layout-spacer"></div>
+                <i class="material-icons">keyboard_arrow_right</i>
+              </div>
             </div>
+
+            <div class="demo-card-event mdl-order-card mdl-shadow--2dp mdl-cell mdl-cell--5-col mdl-order">
+
+              <div class="mdl-card__title mdl-card--border">
+                  <span id="team_id_text"></span>
+              </div>
+
+              <div class="mdl-card__title mdl-card--border mdl-crdit">
+                <span>[Credit]&nbsp</span>
+                <span>14,000원</span>
+              </div>
+
+              <div id="btn_cart_book" class="mdl-card__actions mdl-card--borde mdl-book-request-bottom mdl-button--accent mdl-button mdl-button--colored mdl-book-bottom-menu mdl-btn-cart">
+                <a class="mdl-button mdl-js-button mdl-book-request-bottom-text">
+                  Cart
+                </a>
+                <div class="mdl-layout-spacer"></div>
+                <i class="material-icons">keyboard_arrow_right</i>
+              </div>
+
+              <div id="btn_order_book"  class="mdl-card__actions mdl-card--borde mdl-book-request-bottom mdl-button--accent mdl-button mdl-button--colored mdl-book-bottom-menu mdl-btn-order">
+                <a class="mdl-button mdl-js-button mdl-book-request-bottom-text">
+                  Order
+                </a>
+                <div class="mdl-layout-spacer"></div>
+                <i class="material-icons">keyboard_arrow_right</i>
+              </div>
+
+            </div>
+
+        </div>
+        <div class="mdl-card__actions mdl-card--border mdl-bottom-menu">
+          <div class="bottom-menu-float">
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+              보관함 보기
+            </a>
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+              목록 보기
+            </a>
           </div>
         </div>
 
@@ -113,9 +137,9 @@
 
     <script src="../js/material.min.js"></script>
     <script src="../js/jquery.min.js"></script>
-    <script src="../js/popup.js"></script>
 
+    <script src="../js/checkitout.js"></script>
+    <script src="../js/checkitout-check-session.js"></script>
     <script src="../js/checkitout-request-book.js"></script>
-
   </body>
 </html>

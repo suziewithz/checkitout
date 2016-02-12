@@ -1,5 +1,12 @@
-.login-box {
+body {
+	min-width : 454px;
+}
+
+.parent-box {
 	padding: 8px;
+	position: relative;
+	width : 610px;
+	overflow: hidden;
 }
 
 .demo-card-square.mdl-card {
@@ -15,6 +22,14 @@
 	height: 219px;
 	background: #3E4EB8;
 }
+
+.demo-card-event.mdl-order-card {
+	width: 150px;
+	height: 219px;
+	background: #64B5F6;
+	float: right;
+}
+
 .demo-card-event > .mdl-card__actions {
 	border-color: rgba(255, 255, 255, 0.2);
 }
@@ -50,6 +65,7 @@
 	background: #5C6BC0;
 	text-align: center;
 }
+
 .demo-card-image__filename {
 	color: #fff;
 	font-size: 14px;
@@ -108,3 +124,44 @@
 .mdl-book-bottom-menu {
 	background: #5C6BC0;
 }
+
+.mdl-order {
+	/*visibility: hidden;*/
+}
+
+.mdl-book-bottom-menu.mdl-btn-cart {
+	background: #2196F3;
+}
+
+.mdl-book-bottom-menu.mdl-btn-cart:hover {
+	background: #1976D2;
+}
+
+.mdl-book-bottom-menu.mdl-btn-cart:active {
+	background: #BBDEFB;
+}
+
+.mdl-book-bottom-menu.mdl-btn-order {
+	background: #0D47A1;
+}
+
+.mdl-book-bottom-menu.mdl-btn-order:hover {
+	background: #1976D2;
+}
+
+.mdl-book-bottom-menu.mdl-btn-order:active {
+	background: #BBDEFB;
+}
+
+.mdl-book-bottom-menu.mdl-btn-order > .mdl-button {
+	padding-left: 6px;
+}
+
+.mdl-book-bottom-menu.mdl-btn-cart > .mdl-button {
+	padding-left: 2px;
+}
+
+.mdl-card--border.mdl-crdit {
+	height: 80px;
+}
+
