@@ -101,25 +101,9 @@ $(document).ready( function() {
         cookieBook.createdDate = date.getFullYear() + '년 ' + date.getMonth() + "월 " + date.getDate() + "일 " + date.getHours() + "시 " + date.getMinutes() + "분";
         isNeedToAdd = true;
 
-        CartStorage.load(function(data) {
-            if(data!=null) {
-                cookieBookList = data;
-            } else {
-                cookieBookList = [];
-            }
-
-            for(i = 0 , len = cookieBookList.length; i < len; ++i) {
-                if(cookieBookList[i].isbn13 == cookieBook.isbn13) {
-                    isNeedToAdd = false;
-                    console.log("already added");
-                    break;
-                }
-            }
-
-            if(isNeedToAdd) {
-                cookieBookList.push(cookieBook);
-                CartStorage.setValue(cookieBookList, function() {});
-            }
+        cartStorage.addItem(cookieBook, function(data) {
+            hello = data;
+            console.log(hello);
         });
     });
 
