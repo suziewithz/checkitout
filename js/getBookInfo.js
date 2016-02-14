@@ -9,7 +9,7 @@ var bookInfo = {
 			bookInfo.getBookInfo('yes24');
 		}
 		else if(curUrl.indexOf(hanbit) > -1){
-
+			bookInfo.getBookInfo('hanbit');
 		}
 		else {
 
@@ -105,6 +105,66 @@ var bookInfo = {
 
 		getImg: function() {
 			var imgUrl = $('#mainImage').attr('src');
+			return imgUrl
+		}
+	},
+	hanbit: {
+		getBookType: function() {
+			var bookType = '';
+			$('input[name="productid"]').each(function(index) {
+				if(index==0) {
+					bookType = $(this).val();
+				}
+			});
+			bookType = bookType.split('|')[1];
+			return bookType;
+		},
+
+		getBookName: function() {
+			var title = $('strong.tl').text();
+			return title;
+		},
+
+		getPrice: function() {
+			var price = "";
+			$('div.pricebar2 > strong.cC1').each(function(index) {
+				if(index==0) {
+					price = $(this).text();
+				}
+			});
+			
+        	price = price.replace(/,/g,"");
+        	price = price.replace(/원/g, "");
+        	return price;
+        },
+        
+		getEbookPrice: function() {
+			var price = "";
+			$('div.pricebar2 > strong.cC1').each(function(index) {
+				if(index==0) {
+					price = $(this).text();
+				}
+			});
+			
+        	price = price.replace(/,/g,"");
+        	price = price.replace(/원/g, "");
+        	return price;
+		},
+
+		getISBN13: function(document) {
+			var isbn13 = '';
+			$('input[name="productid"]').each(function(index) {
+				if(index==0) {
+					isbn13 = $(this).val();
+				}
+			});
+			isbn13 = isbn13.split('|')[0];
+			return isbn13;
+		},
+
+		getImg: function() {
+			//var imgUrl = $('#bookWrap > div.bDetail > div.detGp1 > div.bg > div.ctl > div.t1 > img').attr('src');
+			var imgUrl = $('div.ctl > div.t1 > img').attr('src');
 			return imgUrl
 		}
 	}
