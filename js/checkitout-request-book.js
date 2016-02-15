@@ -55,12 +55,12 @@ checkitout.request_book = {
 			var $parentBox = $(".parent-box");
 			if($parentBox.hasClass('moved')){
 				$parentBox.removeClass('moved')
-				$parentBox.animate({ "left": "+=168px" }, "fast" );
+				$parentBox.animate({ "left": "+=170px" }, "fast" );
 				$btnRequestBookIcon.text('keyboard_arrow_right')
 			}
 			else{
 				$parentBox.addClass('moved')
-				$parentBox.animate({ "left": "-=168px" }, "fast" );
+				$parentBox.animate({ "left": "-=170px" }, "fast" );
 				$btnRequestBookIcon.text('keyboard_arrow_left')
 			}
 		});
