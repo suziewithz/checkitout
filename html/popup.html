@@ -27,24 +27,30 @@
         max-width: 400px;
       }
     </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.1/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.1.1/material.min.js"></script>
     <script src="../js/jquery.min.js"></script>
+    <script src="../js/storage.js"></script>
     <script src="../js/popup.js"></script>
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
   </head>
   <body>
     <input type="hidden" name="input_user_email" />
     <input type="hidden" name="input_price" />
+    <input type="hidden" name="input_ebook_price" />
     <input type="hidden" name="input_book_name" />
     <input type="hidden" name="input_isbn13" />
     <input type="hidden" name="input_url" />
 
     <div id="user_email"></div>
     <div id="price"></div>
+    <div id="ebook_price"></div>
     <div id="book_name"></div>
     <div id="isbn13"></div>
     <div id="url"></div>
     <img id="image-result" hidden>
     <button type="button" id="addCart" class="btn btn-default">즐겨찾기 등록</button>
+    <button type="button" id="goToCart" class="btn btn-default">즐겨찾기</button>
   </body>
 </html>
 

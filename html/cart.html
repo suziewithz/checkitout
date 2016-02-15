@@ -1,0 +1,248 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>책 it out</title>
+
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <!-- Web Application Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Web Starter Kit">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Web Starter Kit">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileColor" content="#2F3BA2">
+
+    <!-- Color the status bar on mobile devices -->
+    <meta name="theme-color" content="#2F3BA2">
+
+    <link rel="stylesheet" href="../css/material.min.css">
+    <script src="../js/material.min.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+      body {
+        width : 500px; min-height:250px;
+        height: 400px;
+        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+        font-size: 100%;
+      }
+    </style>
+    <script src="../js/jquery.min.js"></script>
+    <!-- <link href="../css/bootstrap.min.css" rel="stylesheet"> -->
+    <script src="../js/storage.js"></script>
+    <script src="../js/cart.js"></script>
+    <script src="../js/checkitout.js"></script>
+    <script src="../js/checkitout-check-session.js"></script>
+
+    <!-- Image card -->
+<style>
+
+/*.demo-card-square > .mdl-card__title {
+  color: #fff;
+}
+.mdl-card__top-menu {
+  position:absolute;
+  top:5px;
+  right:5px;
+}
+*/
+.money {
+  float:right;
+  width:40%;
+  text-align:right;
+  font-size:13px;
+  color: #888;
+  padding: 5px;
+}
+
+.book_type {
+  float:left;
+  width:45%;
+  text-align:left;
+  font-size:13px;
+  color: #555;
+  padding: 5px;
+}
+
+.demo-card-image.mdl-card {
+  width:145px;
+  height:230px;
+}
+
+.mdl-card--expand, .mdl-card__actions {
+  cursor:pointer;
+}
+
+.demo-card-image > .book-title {
+  height: 80px;
+  padding: 15px;
+  font-size:14px;
+  background: rgba(0, 0, 0, 0.5);
+
+}
+
+.demo-card-image > .book-title > div {
+  color:white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* 라인수 */
+  -webkit-box-orient: vertical;
+  word-wrap:break-word; /* aaaaaaaaaaa같은 영문때문에 필요 */  
+}
+
+.card-custom-area {
+  text-align:right;
+  background-color:white;
+  border-top: 1px solid rgba(0,0,0,.1);
+}
+
+#button_delete_all {
+  margin-left : 16px; 
+  margin-bottom: 16px;
+  color: rgb(244, 67, 54);
+}
+
+.button_url {
+  font-size:18px; 
+}
+
+.button_delete_item {
+  font-size:18px;
+}
+
+.clearFix  {
+  clear:both;
+}
+
+#tip {
+  margin-left: 16px;
+  margin-top:6px;
+}
+.alert {
+  color: rgb(244, 67, 54);
+  font-size : 12px;
+}
+
+.icon-red {
+  color: rgb(244, 67, 54);
+}
+
+.infor {
+  color : #3E4EB8;
+  font-size : 12px;
+}
+
+#credit_amount {
+  margin-right:10px;
+  color : rgb(255, 235, 59);
+}
+
+.mdl-dialog {
+  width:400px;
+}
+
+#dialog_order_title {
+  font-weight: bold;
+  color: #222;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+#dialog_book_title {
+  color: #333;
+  font-size: 15px;
+  margin-bottom:6px;
+}
+
+</style>
+<!-- Event card -->
+  </head>
+  <body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <!-- Title -->
+          <span class="mdl-layout-title">책 it out</span>
+          <!-- Add spacer, to align navigation to the right -->
+          <div class="mdl-layout-spacer"></div>
+          <!-- Navigation -->
+          <!-- <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" href="requestBook.html">current book</a>
+            <a class="mdl-navigation__link" href="">history</a>
+          </nav> -->
+          <span id="credit_amount"></span>
+          <span id="team_id_text"></span>
+        </div>
+      </header>
+      <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">Title</span>
+        <nav class="mdl-navigation">
+          <a class="mdl-navigation__link" href="requestBook.html">current book</a>
+          <a class="mdl-navigation__link" href="">history</a>
+        </nav>
+      </div>
+      <main class="mdl-layout__content">
+        <div class="page-content"><!-- Your content goes here -->
+          <div id="tip"></div>
+          <div class="parent_tr mdl-grid">
+          </div>
+          
+          <button id="button_delete_all" class="mdl-button mdl-js-button mdl-button--raised"> Delete All </button>
+          <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
+            <div class="mdl-snackbar__text"></div>
+            <button class="mdl-snackbar__action" type="button"></button>
+          </div>
+          <dialog class="mdl-dialog">
+            <div class="mdl-dialog__content">
+              <div id="dialog_order_title"></div>
+              <div id="dialog_book_title"></div>
+              <div>
+                <span class='mdl-dialog__price'>3,920원</span>
+              </div>
+              <div>
+                Do you want to proceed to order?
+              </div>
+              <div class='infor ebook'>
+                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored">
+                  <i class="material-icons">information</i>
+                </button>
+                If you want to buy an ebook, you should send an email to the administrator about your account of this site.
+              </div>
+              <div class='alert reject'>
+                <button class="mdl-button mdl-js-button mdl-button--icon icon-red">
+                  <i class="material-icons">information</i>
+                </button>
+                It was rejected before.
+              </div>
+              <div class='alert credit'>
+                <button class="mdl-button mdl-js-button mdl-button--icon icon-red">
+                  <i class="material-icons">information</i>
+                </button>
+                The price exceeds credit for a month.
+              </div>
+            </div>
+            <div class="mdl-dialog__actions">
+              <button type="button" class="mdl-button order">order</button>
+              <button type="button" class="mdl-button close">close</button>
+            </div>
+          </dialog>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
+
