@@ -1,3 +1,7 @@
 body {
 	min-height: 500px;
 }
+
+.mdl-js-snackbar.mdl-snackbar {
+	left: 0;
+}

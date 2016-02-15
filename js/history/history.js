@@ -2,20 +2,10 @@
  * Created by kyuta on 2016. 2. 12..
  */
 
-require(["template",
-    "/js/material.min.js",
-    "jquery",
-    "/js/util/constants.js"], function (templateManager) {
+require(['template', 'message', 'jquery',
+    '/js/util/constants.js'], function (templateManager, messageManager) {
 
-    var sendMessage = function (msg) {
-        var messageToast = document.querySelector('#message-toast');
-        var data = {
-            message: msg
-        };
-
-        messageToast.MaterialSnackbar.showSnackbar(data);
-        //console.log(data);
-    };
+    var loadingScreen = $("#spinner");
 
     var loginCheck = function () {
         $.ajax({
@@ -24,17 +14,14 @@ require(["template",
             success: function (result, status, xhr) {
                 if (xhr.status == 200) {
                     if (result != null) {
-                        if (result.rcode == 'RET0000') {
-                            sendMessage(result.rdata.entityList[0].realName + '님 환영합니다!');
-                        }
-                        else {
+                        if (!result.rcode == 'RET0000') {
                             $(location).attr('href', '/html/signin.html');
                         }
                     }
                 }
             },
             error: function () {
-                console.log('error');
+                console.log('error on loginCheck');
             }
         });
     }();
@@ -51,11 +38,11 @@ require(["template",
                 }
             },
             error: function () {
-                console.log('error');
+                console.log('error on getHistory');
             }
         });
     }();
-
+    
     $('#btn_go_to_request').click(function () {
         $(location).attr('href', 'requestBook.html');
     });
@@ -66,6 +53,28 @@ require(["template",
 
     $('#btn_go_to_history').click(function () {
         $(location).attr('href', 'history.html');
+    });
+
+    $('#history').on('click', 'div.delete', function () {
+        messageManager.sendMessage('도서 주문 신청을 취소하시겠습니까?', 4000, '신청 취소', function () {
+            $('#history').find('section.history-card').hide();
+            loadingScreen.show();
+
+            $.ajax({
+                url: CONSTANT.BASEURL + '/api/v1/order/delete',
+                method: "POST",
+                success: function (result, status, xhr) {
+                    if (xhr.status == 200) {
+                        if (result != null) {
+                            location.reload();
+                        }
+                    }
+                },
+                error: function () {
+                    console.log('error on delete');
+                }
+            });
+        });
     });
 
 });
