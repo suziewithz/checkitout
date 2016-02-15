@@ -10,14 +10,37 @@ function setSnackBar(_message, _timeout, _actionHandler, _actionText) {
     var snackbarContainer = document.querySelector('#snackbar');
     snackbarContainer.MaterialSnackbar.showSnackbar(data);
 }
-//setSnackBar('전체체크하였습니다', 2000, null, '닫기');
-function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+function splitIdAndType(key) {
+    var splitArray = key.split('|');
+    
+    if(splitArray.length == 2) {
+        return splitArray;    
+    } else {
+        return [];  // error
+    }
 }
 
 var cartPage = {
     cartList:{},
     init: function() {
+        Number.prototype.format = function(){
+            if(this==0) return 0;
+
+            var reg = /(^[+-]?\d+)(\d{3})/;
+            var n = (this + '');
+
+            while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
+
+            return n;
+        };
+
+        String.prototype.format = function(){
+            var num = parseFloat(this);
+            if( isNaN(num) ) return "0";
+
+            return num.format();
+        };
+
         cartPage.loadList(function() {
             cartPage.makeList();
             cartPage.bindEvent();
@@ -31,51 +54,23 @@ var cartPage = {
     },
     makeCard : function(book) {
         var card = '';
-        
-        card += '<div class="demo-card-image mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col" style="background:url(\''+book.imgUrl + '\') top / cover ; background-repeat: no-repeat;">';
-        card += '<div id="'+book.isbn13+'" class="mdl-card__title mdl-card--expand"></div>';
-        card += '<div id="' + book.isbn13 + '" class="mdl-card__actions book-title"><div>';
+        var key = book.isbn13 + "|" + book.bookType;
+        card += '<div class="demo-card-image mdl-card mdl-shadow--2dp mdl-cell mdl-cell--3-col" style="background:url(\''+book.imgUrl + '\') top / cover ; background-repeat: no-repeat;">';
+        card += '<div id="'+key+'" class="mdl-card__title mdl-card--expand"></div>';
+        card += '<div id="' + key + '" class="mdl-card__actions book-title"><div>';
         card += book.bookName;
         card += '</div></div>';
         card += '<div class="card-custom-area">';
         card += '<div class="book_type">' + book.bookType + '</div>'
-        card += '<div class="money">'+numberWithCommas(book.price)+'원</div>';
+        card += '<div class="money">'+book.price.format()+'원</div>';
         card += '<div class="clearFix"></div>';
         card += '</div><div class="card-custom-area">';
         card += '<button alt="링크로 이동" value="' + book.url + '" class="button_url mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">link</i></button>';
-        card += '<button alt="삭제하기" value="' + book.isbn13 + '" class="button_delete_item mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">delete</i></button>';
+        card += '<button alt="삭제하기" value="' + key + '" class="button_delete_item mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">delete</i></button>';
         card += '</div></div>';
         card += '</div>';
         card += '</div>';
         return card;
-    },
-    makeRow : function(index, book) {
-        tableRow = "";
-        if(index %2 == 0) {
-            tableRow += '<tr class="even" id="' + book.isbn13 + '">'; 
-        } else {
-            tableRow += '<tr class="odd" id="' + book.isbn13 + '">';
-        }
-
-        tableRow += '<td>';
-        tableRow += '<input type="hidden" class="input_json" value="' + book.isbn13 + '" />';
-        tableRow += '<input type="checkbox" class="check_row" value="' + book.isbn13 + '" />';
-        tableRow += '</td><td>';
-        tableRow += book.name;
-        tableRow += '</td><td>';
-        tableRow += book.price;
-        tableRow += '</td><td>';
-        if(book.isEbook) {
-            tableRow += "이북";
-        } else {
-            tableRow += "서적";
-        }
-        tableRow += '</td><td>';
-        tableRow += book.createdDate;
-        tableRow += '</td><td>'; 
-        tableRow += '<button type="button" class="button_url" value="' + book.url +'">보기</button></td>';
-
-        return tableRow;
     },
     makeList : function() {
         var tbodyParent = $('.parent_tr');
@@ -153,26 +148,39 @@ var cartPage = {
         });
 
         $('.mdl-card--expand, .mdl-card__actions').click(function() {
-            var isbn13 = $(this).attr('id');
-            var book = cartPage.cartList[isbn13];
+            var key = $(this).attr('id');
+            var book = cartPage.cartList[key];
             if(book != null) {
                 cartPage.setDialogContent(book);
                 var dialog = document.querySelector('dialog');
                 if (! dialog.showModal) {
                     dialogPolyfill.registerDialog(dialog);
                 }
-                dialog.showModal();
+                
+                dialog.querySelector('.order').addEventListener('click', function() {
+
+                });
                 dialog.querySelector('.close').addEventListener('click', function() {
                     dialog.close();
                 });    
+
+                dialog.showModal();
             }
             
         });
     },
     setDialogContent : function(book) {
         var dialog = $('dialog');
-        var title = $('dialog').find('h5');
-        title.text(book.bookName);
+        dialog.find('div#dialog_order_title').html("Order [" + book.bookType + "]");
+        var title = dialog.find('div#dialog_book_title').html(book.bookName);
+        var price ="";
+        if(book.bookType.toLowerCase() == 'ebook')
+            price = book.ebookPrice.format();
+        else 
+            price = book.price.format();
+        dialog.find('#mdl-dialog__price').html(price + "원");
+        dialog.find('button.order').val(book.isbn13 + "|" + book.bookType);
+
     },
     focusOrCreateTab : function(url) {
       chrome.windows.getAll({'populate':true}, function(windows) {

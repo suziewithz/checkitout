@@ -75,7 +75,7 @@ var bookInfo = {
 		},
 
 		getPrice: function() {
-			var price = "";
+			var price = "0원";
 			$('em.yes_b').each(function(index) {
 				if(index==0) {
 					price = $(this).text();
@@ -85,7 +85,7 @@ var bookInfo = {
 		},
 
 		getEbookPrice: function() {
-			var price = "";
+			var price = "0원";
 			$('em.yes_b').each(function(index) {
 				if(index==1) {
 					price = $(this).text();
@@ -126,7 +126,7 @@ var bookInfo = {
 		},
 
 		getPrice: function() {
-			var price = "";
+			var price = "0원";
 			$('div.pricebar2 > strong.cC1').each(function(index) {
 				if(index==0) {
 					price = $(this).text();
@@ -139,7 +139,7 @@ var bookInfo = {
         },
         
 		getEbookPrice: function() {
-			var price = "";
+			var price = "0원";
 			$('div.pricebar2 > strong.cC1').each(function(index) {
 				if(index==0) {
 					price = $(this).text();

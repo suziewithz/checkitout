@@ -2,8 +2,9 @@ var cartStorage = {
     maxNum: 30,
     addItem: function(book, callback) {
         bookItem = {};
-        bookItem[book.isbn13] = book;
-        chrome.storage.local.get(book.isbn13, function(data) {
+        var key = book.isbn13 + "|" + book.bookType;
+        bookItem[key] = book;
+        chrome.storage.local.get(key, function(data) {
             if($.isEmptyObject(data)) {
                 chrome.storage.local.set(bookItem, callback);
             } else {
