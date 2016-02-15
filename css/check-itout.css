@@ -1,12 +1,17 @@
 body {
-	min-width : 454px;
+	min-width : 500px;
+	min-height: 320px;
 }
 
 .parent-box {
-	padding: 8px;
+	padding: 24px 8px 24px 8px;
 	position: relative;
-	width : 610px;
+	width : 656px;
 	overflow: hidden;
+}
+
+.mdl-js-snackbar.mdl-snackbar {
+	left: 0;
 }
 
 .demo-card-square.mdl-card {
@@ -18,7 +23,8 @@ body {
 }
 
 .demo-card-event.mdl-card {
-	width: 256px;
+	/*width: 256px;*/
+	width: 300px;
 	height: 219px;
 	background: #3E4EB8;
 }

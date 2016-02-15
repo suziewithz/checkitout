@@ -4,6 +4,7 @@ checkitout.request_book = {
 	cookieBook : {},
 
 	init: function(){
+		var that = checkitout.request_book;
 
 		Number.prototype.format = function(){
 			if(this==0) return 0;
@@ -22,8 +23,21 @@ checkitout.request_book = {
 
 			return num.format();
 		};
-		checkitout.request_book.addEvent();
 
+		that.dialog = document.querySelector('dialog');
+		if (!that.dialog.showModal) {
+			dialogPolyfill.registerDialog(dialog);
+		}
+		that.dialog.querySelector('.close').addEventListener('click', function() {
+			that.dialog.close();
+		});
+
+		that.dialog.querySelector('.confirm').addEventListener('click', function() {
+			that.orderBook();
+			that.dialog.close();
+		});
+
+		checkitout.request_book.addEvent();
 		$('.mdl-checkbox').removeClass('is-focused');
 	},
 
@@ -86,7 +100,7 @@ checkitout.request_book = {
 
 			if(price > availableCredit){
 				handler = function(event) {
-					that.orderBook();
+					that.dialog.showModal();
 				};
 
 				data = {
@@ -100,7 +114,7 @@ checkitout.request_book = {
 				snackbarContainer.MaterialSnackbar.showSnackbar(data);
 			}
 			else{
-				that.orderBook();
+				that.dialog.showModal();
 			}
 		});
 
@@ -176,24 +190,29 @@ checkitout.request_book = {
 
 	orderBook: function() {
 		var book = checkitout.request_book.cookieBook;
+		var price;
+
+		if(book.bookType.toLowerCase() == 'ebook'){
+			price = book.ebookPrice;
+		}
+		else{
+			price = book.price;
+		}
 
 		var booksDto = {
 			"bookSrl": 0,
-			"ISBN": book.isbn13,
+			"isbn": book.isbn13,
 			"title": book.bookName,
 			"author": "123",
 			"url": book.url,
-			"price": book.price,
-			"ebookPrice": book.ebookPrice,
 			"isInappropriate": "false"
 		};
 
 		$.ajax({
-			url: checkitout.request_book.baseUrl + '/api/v1/book',
+			url: checkitout.request_book.baseUrl + '/api/v1/order/new',
 			method: "POST",
 			dataType:"json",
-			//data: { booksDto: JSON.stringify(booksDto), bookType: book.bookType },
-			data: { booksDto: JSON.stringify(booksDto) },
+			data: { booksDto: JSON.stringify(booksDto), bookType: book.bookType, price: price },
 			success: function (result, status, xhr) {
 				if (xhr.status == 200) {
 					if (result != null) {
