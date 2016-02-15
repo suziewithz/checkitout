@@ -135,6 +135,9 @@
 .alert {
   color: rgb(244, 67, 54);
   font-size : 12px;
+  margin-bottom:5px;
+  border :1px solid; 
+  padding : 2px;
 }
 
 .icon-red {
@@ -144,6 +147,9 @@
 .infor {
   color : #3E4EB8;
   font-size : 12px;
+  margin-bottom:5px;
+  border :1px solid;
+  padding : 2px; 
 }
 
 #credit_amount {
@@ -158,15 +164,64 @@
 #dialog_order_title {
   font-weight: bold;
   color: #222;
-  font-size: 15px;
+  font-size: 16px;
   margin-bottom: 10px;
 }
 
 #dialog_book_title {
   color: #333;
-  font-size: 15px;
+  font-size: 16px;
   margin-bottom:6px;
 }
+
+.infor_wrap {
+    margin-top:5px;
+    max-height: 130px;
+    overflow-y: scroll;
+    margin-bottom:6px;
+}
+
+.mdl-dialog {
+  overflow-y:scroll;
+}
+
+#dialog_price {
+  font-size : 15px;
+  color: #39B449;
+  width:100%;
+  font-weight: bold;
+  text-align: right;
+  padding : 3px;
+  margin-bottom:5px;
+}
+
+#dialog_before_credit {
+  font-size : 13px;
+  color : #444;
+  width:100%;
+  text-align:  right;
+  padding : 3px;
+}
+
+#dialog_after_credit {
+  font-size : 14px;
+  color : #F54D1C;
+  width:100%;
+  text-align:  right;
+  padding: 3px;
+  border-top:1px solid rgba(0,0,0,.1);
+  font-weight: bold;
+}
+
+.mdl-dialog__content {
+  padding-bottom:5px;
+}
+
+.order {
+  background: #3E4EB8;
+  color:white;
+}
+
 
 </style>
 <!-- Event card -->
@@ -210,34 +265,33 @@
             <div class="mdl-dialog__content">
               <div id="dialog_order_title"></div>
               <div id="dialog_book_title"></div>
-              <div>
-                <span class='mdl-dialog__price'>3,920원</span>
-              </div>
-              <div>
-                Do you want to proceed to order?
-              </div>
-              <div class='infor ebook'>
-                <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored">
-                  <i class="material-icons">information</i>
-                </button>
-                If you want to buy an ebook, you should send an email to the administrator about your account of this site.
-              </div>
-              <div class='alert reject'>
-                <button class="mdl-button mdl-js-button mdl-button--icon icon-red">
-                  <i class="material-icons">information</i>
-                </button>
-                It was rejected before.
-              </div>
-              <div class='alert credit'>
-                <button class="mdl-button mdl-js-button mdl-button--icon icon-red">
-                  <i class="material-icons">information</i>
-                </button>
-                The price exceeds credit for a month.
-              </div>
+              <div class="infor_wrap">
+                <div class='infor dialog_ebook_info'>
+                  <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored">
+                    <i class="material-icons">information</i>
+                  </button>
+                  If you want to buy an ebook, you should send an email to the administrator about your account of this site.
+                </div>
+                <div class='alert dialog_alert_reject'>
+                  <button class="mdl-button mdl-js-button mdl-button--icon icon-red">
+                    <i class="material-icons">information</i>
+                  </button>
+                  It was rejected before.
+                </div>
+                <div class='alert dialog_alert_credit'>
+                  <button class="mdl-button mdl-js-button mdl-button--icon icon-red">
+                    <i class="material-icons">information</i>
+                  </button>
+                  The price exceeds credit for a month.
+                </div>
+            </div>
+              <div id="dialog_before_credit"> </div>
+              <div id="dialog_price"> </div>
+              <div id="dialog_after_credit"> </div>
             </div>
             <div class="mdl-dialog__actions">
-              <button type="button" class="mdl-button order">order</button>
-              <button type="button" class="mdl-button close">close</button>
+              <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect order">order</button>
+              <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect close">cancel</button>
             </div>
           </dialog>
         </div>
