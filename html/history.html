@@ -16,6 +16,12 @@
             text-align: center;
         }
 
+        #spinner {
+            width: 100%;
+            padding-top: 180px;
+            text-align: center;
+        }
+
     </style>
 
     <link rel="stylesheet" href="../css/material.min.css">
@@ -43,32 +49,9 @@
     </header>
     <main class="mdl-layout__content">
         <div class="mdl-layout__tab-panel is-active" id="history">
-            <section class="history-card mdl-shadow--2dp">
-                <table class="mdl-data-table mdl-js-data-table">
-                    <thead>
-                    <tr>
-                        <th colspan="3">2월 신청</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td class="mdl-data-table__cell--non-numeric">Acrylic (Transparent)</td>
-                        <td>25000</td>
-                        <td>수령완료</td>
-                    </tr>
-                    <tr>
-                        <td class="mdl-data-table__cell--non-numeric">Acrylic (Transparent)</td>
-                        <td>25000</td>
-                        <td>수령완료</td>
-                    </tr>
-                    <tr>
-                        <td class="mdl-data-table__cell--non-numeric">Acrylic (Transparent)</td>
-                        <td>25000</td>
-                        <td>수령완료</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </section>
+            <div id="spinner">
+                <div class="mdl-spinner mdl-js-spinner is-active"></div>
+            </div>
             <div id="message-toast" class="mdl-js-snackbar mdl-snackbar">
                 <div class="mdl-snackbar__text"></div>
                 <button class="mdl-snackbar__action" type="button"></button>
