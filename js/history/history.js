@@ -2,10 +2,10 @@
  * Created by kyuta on 2016. 2. 12..
  */
 
-require(["/js/jquery.min.js",
+require(["template",
     "/js/material.min.js",
-    "/js/util/constants.js",
-    "template"], function () {
+    "jquery",
+    "/js/util/constants.js"], function (templateManager) {
 
     var sendMessage = function (msg) {
         var messageToast = document.querySelector('#message-toast');
@@ -43,10 +43,10 @@ require(["/js/jquery.min.js",
         $.ajax({
             url: CONSTANT.BASEURL + '/api/v1/order/my',
             method: "GET",
-            success: function (result, status, xhr) {
+            success: function (data, status, xhr) {
                 if (xhr.status == 200) {
-                    if (result != null) {
-                        console.log(result);
+                    if (data != null) {
+                        templateManager.setBooks(data);
                     }
                 }
             },
@@ -56,4 +56,25 @@ require(["/js/jquery.min.js",
         });
     }();
 
+});
+
+requirejs.config({
+    paths: {
+        'jquery': [
+            '/js/jquery.min'
+        ],
+        'underscore': [
+            '/js/lib/underscore.min'
+        ],
+        'moment': [
+            '/js/lib/moment.min'
+        ]
+    },
+    shim: {
+        'underscore': {
+            exports: function () {
+                return _;
+            }
+        }
+    }
 });
