@@ -185,8 +185,13 @@ checkitout.request_book = {
 		checkitout.request_book.renderView();
 	},
 
+	renderAuthor: function(author) {
+		checkitout.request_book.cookieBook.author = author;
+		checkitout.request_book.renderView();
+	},
+
 	renderView: function(){
-		if(++checkitout.request_book.renderCount == 7){
+		if(++checkitout.request_book.renderCount == 8){
 			var that = checkitout.request_book;
 			var bookInfo = checkitout.request_book.cookieBook;
 
@@ -249,7 +254,7 @@ checkitout.request_book = {
 			"bookSrl": 0,
 			"isbn": book.isbn13,
 			"title": book.bookName,
-			"author": "123",
+			"author": book.author,
 			"url": book.url,
 			"isInappropriate": "false"
 		};
@@ -325,5 +330,11 @@ chrome.extension.onMessage.addListener(function(request, sender) {
 chrome.extension.onMessage.addListener(function(request, sender) {
 	if (request.action == "getImg") {
 		checkitout.request_book.renderImg(request.source);
+	}
+});
+
+chrome.extension.onMessage.addListener(function(request, sender) {
+	if (request.action == "getAuthor") {
+		checkitout.request_book.renderAuthor(request.source);
 	}
 });
