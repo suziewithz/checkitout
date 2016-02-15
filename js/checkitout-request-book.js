@@ -71,6 +71,10 @@ checkitout.request_book = {
 			$(location).attr('href', 'cart.html');
 		});
 
+		$('#btn_go_to_history').click(function () {
+			$(location).attr('href', 'history.html');
+		});
+
 		$('#btn_cart_book').click(function(){
 			var date = new Date();
 	        checkitout.request_book.cookieBook.createdDate = date.getFullYear() + '년 ' + date.getMonth() + "월 " + date.getDate() + "일 " + date.getHours() + "시 " + date.getMinutes() + "분";

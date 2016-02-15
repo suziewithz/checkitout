@@ -7,39 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Starter Kit</title>
 
-    <!-- Disable tap highlight on IE -->
-    <meta name="msapplication-tap-highlight" content="no">
-
     <!-- Web Application Manifest -->
     <link rel="manifest" href="manifest.json">
-
-    <!-- Add to homescreen for Chrome on Android -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Web Starter Kit">
-
-    <!-- Add to homescreen for Safari on iOS -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Web Starter Kit">
-
-    <!-- Tile icon for Win8 (144x144 + tile color) -->
-    <meta name="msapplication-TileColor" content="#2F3BA2">
-
-    <!-- Color the status bar on mobile devices -->
-    <meta name="theme-color" content="#2F3BA2">
-
-    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
-    <!--
-    <link rel="canonical" href="http://www.example.com/">
-    -->
-
-    <!-- Material Design Lite page styles:
-    You can choose other color schemes from the CDN, more info here http://www.getmdl.io/customize/index.html
-    Format: material.color1-color2.min.css, some examples:
-    material.red-teal.min.css
-    material.blue-orange.min.css
-    material.purple-indigo.min.css
-    -->
 
     <!-- Material Design icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -49,8 +18,15 @@
     <link rel="stylesheet" href="../css/material.min.css">
 
   </head>
-  <body class="mdl-demo mdl-base">
+  <body class="mdl-checkit mdl-base">
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
+          <a id="btn_go_to_request" href="#overview" class="mdl-layout__tab is-active">신청하기</a>
+          <a id="btn_go_to_history" href="#history" class="mdl-layout__tab">신청내역</a>
+          <a id="btn_go_to_cart" href="#features" class="mdl-layout__tab">찜목록</a>
+        </div>
+      </header>
       <main class="mdl-layout__content mdl-color-text--grey-600">
 
         <div class="parent-box mdl-grid is-active" id="overview">
@@ -120,16 +96,6 @@
 
             </div>
 
-        </div>
-        <div class="mdl-card__actions mdl-card--border mdl-bottom-menu">
-          <div class="bottom-menu-float">
-            <a id="btn_go_to_cart" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-              보관함 보기
-            </a>
-            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-              목록 보기
-            </a>
-          </div>
         </div>
 
         <dialog class="mdl-dialog">
