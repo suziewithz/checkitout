@@ -16,7 +16,7 @@ define(["text!/html/template/history-list.hbs",
     var setBooks = function (data) {
         setData(data);
 
-        loadingScreen.remove();
+        loadingScreen.hide();
 
         _.each(historyData, function (data, key) {
             var currentTemplate = listTemplate({'orderDate': key, 'books': data});

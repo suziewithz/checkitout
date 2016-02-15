@@ -11,7 +11,8 @@
                 <td class="mdl-data-table__cell--non-numeric">{{book.title}}</td>
                 <td>{{price}}원</td>
                 <td>
-                    <div id="order-{{srl}}" class="icon material-icons {{status.icon}}">{{status.icon}}</div>
+                    <div id="order-{{srl}}" data-order="{{srl}}"
+                         class="icon material-icons {{status.icon}}">{{status.icon}}</div>
                     <div class="mdl-tooltip" for="order-{{srl}}">
                         {{#if status.message}}
                             {{status.message}}
