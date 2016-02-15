@@ -23,6 +23,8 @@ checkitout.request_book = {
 			return num.format();
 		};
 		checkitout.request_book.addEvent();
+
+		$('.mdl-checkbox').removeClass('is-focused');
 	},
 
 	addEvent: function(){
@@ -88,8 +90,9 @@ checkitout.request_book = {
 				};
 
 				data = {
-					message: 'The lack of credit is "' + ((availableCredit - price)*-1).format() + ' won"'
-								+ ' - You must contact admin.',
+					message: '1. The lack of credit is "' + ((availableCredit - price)*-1).format() + ' won"'
+								+ ' - You must contact admin.'
+								+ ' 2. This book is inaprorpiate book',
 					timeout: 4000,
 					actionText: 'Force Order',
 					actionHandler: handler
@@ -101,15 +104,34 @@ checkitout.request_book = {
 			}
 		});
 
-	},
+		$('#btn_ebook').click(function(){
+			var $bookType = $('#bookType');
+			var $price = $('#price');
+			var type, price;
 
-	orderBook: function(){
-		console.log(checkitout.request_book.cookieBook);
-	},
+			var $focusHelper = $('.mdl-checkbox__focus-helper');
 
-	renderUserInfo: function(userEmail){
-		$('#user_email').text("id : " + userEmail)
-		checkitout.request_book.cookieBook.name = userEmail;
+			if($bookType.hasClass('bookType-ebook')){
+				$bookType.removeClass('bookType-ebook');
+				$focusHelper.css('background-color','transparent');
+
+				type = checkitout.request_book.cookieBook.bookType = '도서';
+				price = checkitout.request_book.cookieBook.price;
+
+				$bookType.text(type);
+				$price.text(price.format() + "원");
+			}
+			else{
+				$bookType.addClass('bookType-ebook');
+				$focusHelper.css('background-color','white');
+
+				type = checkitout.request_book.cookieBook.bookType = 'ebook';
+				price = checkitout.request_book.cookieBook.ebookPrice;
+
+				$bookType.text(type);
+				$price.text(price.format() + "원");
+			}
+		});
 	},
 
 	renderPrice: function(priceText){
@@ -143,24 +165,41 @@ checkitout.request_book = {
 	},
 
 	renderEbookPrice: function(ebookPrice) {
-		if(ebookPrice == "") {
-			$('input[name="input_ebook_price"]').val(0);
-		} else {
-			$('#ebook_price').text("ebook price: " + ebookPrice + "원")
-			checkitout.request_book.cookieBook.ebookPrice = ebookPrice;
+		if(ebookPrice != "") {
+			checkitout.request_book.cookieBook.ebookPrice = ebookPrice.split(',').join("");
+		}
+		else{
+			$('#btn_ebook').prop('disabled', true);
+			$('#btn_ebook_text').css('color','grey');
 		}
 	},
 
-	addBook: function() {
+	orderBook: function() {
+		var book = checkitout.request_book.cookieBook;
+
+		var booksDto = {
+			"bookSrl": 0,
+			"ISBN": book.isbn13,
+			"title": book.bookName,
+			"author": "123",
+			"url": book.url,
+			"price": book.price,
+			"ebookPrice": book.ebookPrice,
+			"isInappropriate": "false"
+		};
+
 		$.ajax({
-			url: checkitout.check_session.baseUrl + '/userinfo',
+			url: checkitout.request_book.baseUrl + '/api/v1/book',
 			method: "POST",
+			dataType:"json",
+			//data: { booksDto: JSON.stringify(booksDto), bookType: book.bookType },
+			data: { booksDto: JSON.stringify(booksDto) },
 			success: function (result, status, xhr) {
 				if (xhr.status == 200) {
 					if (result != null) {
 						var rcode = result.rcode;
 						if(rcode == 'RET0000'){
-							$(location).attr('href', '/html/requestBook.html');
+
 						}
 						else{
 							$(location).attr('href', '/html/signin.html');
@@ -191,6 +230,12 @@ $(document).ready(function() {
 chrome.extension.onMessage.addListener(function(request, sender) {
 	if (request.action == "getPrice") {
 		checkitout.request_book.renderPrice(request.source);
+	}
+});
+
+chrome.extension.onMessage.addListener(function(request, sender) {
+	if (request.action == "getEbookPrice") {
+		checkitout.request_book.renderEbookPrice(request.source);
 	}
 });
 
