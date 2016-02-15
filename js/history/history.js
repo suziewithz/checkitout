@@ -68,7 +68,6 @@ require(['template', 'message', 'jquery',
                 data: {orderSrl: clickedElement.data('order')},
                 success: function (result, status, xhr) {
                     if (xhr.status == 200) {
-                        console.log(result);
                         if (result == 'cancelOk') {
                             location.reload();
                         }
