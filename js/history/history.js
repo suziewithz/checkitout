@@ -42,7 +42,7 @@ require(['template', 'message', 'jquery',
             }
         });
     }();
-    
+
     $('#btn_go_to_request').click(function () {
         $(location).attr('href', 'requestBook.html');
     });
@@ -55,23 +55,28 @@ require(['template', 'message', 'jquery',
         $(location).attr('href', 'history.html');
     });
 
-    $('#history').on('click', 'div.delete', function () {
+    $('#history').on('click', 'div.delete', function (event) {
+        var clickedElement = $(this);
+
         messageManager.sendMessage('도서 주문 신청을 취소하시겠습니까?', 4000, '신청 취소', function () {
             $('#history').find('section.history-card').hide();
             loadingScreen.show();
 
             $.ajax({
-                url: CONSTANT.BASEURL + '/api/v1/order/delete',
-                method: "POST",
+                url: CONSTANT.BASEURL + '/api/v1/order/cancel',
+                method: 'POST',
+                data: {orderSrl: clickedElement.data('order')},
                 success: function (result, status, xhr) {
                     if (xhr.status == 200) {
-                        if (result != null) {
+                        if (result == 'cancelOk') {
                             location.reload();
                         }
                     }
                 },
-                error: function () {
-                    console.log('error on delete');
+                error: function (xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
                 }
             });
         });
