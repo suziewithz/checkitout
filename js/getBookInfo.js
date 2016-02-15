@@ -126,6 +126,11 @@ var bookInfo = {
 	},
 
 	hanbit: {
+
+		getBookType: function() {
+
+		},
+
 		getBookName: function() {
 			var title = $('strong.tl').text();
 			return title;
@@ -211,6 +216,11 @@ var bookInfo = {
 	},
 
 	amazon: {
+
+		getBookType: function() {
+
+		},
+
 		getBookName: function() {
 			var title = $('#productTitle').text();
 			return title;
