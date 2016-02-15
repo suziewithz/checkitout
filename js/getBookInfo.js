@@ -110,14 +110,15 @@ var bookInfo = {
 	},
 	hanbit: {
 		getBookType: function() {
-			var bookType = '';
-			$('input[name="productid"]').each(function(index) {
-				if(index==0) {
-					bookType = $(this).val();
-				}
-			});
-			bookType = bookType.split('|')[1];
-			return bookType;
+			var url = location.href; 
+			if(url.indexOf('/book/') != -1) {
+				return 'book';
+			}
+
+			if(url.indexOf('/ebook/') != -1) {
+				return 'ebook';
+			}
+			return 'undefined';
 		},
 
 		getBookName: function() {
@@ -126,39 +127,75 @@ var bookInfo = {
 		},
 
 		getPrice: function() {
-			var price = "0원";
-			$('div.pricebar2 > strong.cC1').each(function(index) {
-				if(index==0) {
-					price = $(this).text();
-				}
-			});
+			var price = '0원';
+			var type = bookInfo.hanbit.getBookType();
+			if(type == 'book') {
+				price = $('span.a2').text();
+				var priceArray = price.split('(');
+				price = priceArray[0];
+			} else if(type == 'ebook') {
+				var priceArea = $('div.pricebar2').html();
+				var splitArray = priceArea.split('<br>');
+
+				for(i=0 , len =splitArray.length ; i < len ; ++i) {
+					var jqueryStr = "<div>" + splitArray[i] + "</div>"; 
+					var html = $(jqueryStr);
+					var id = html.find('input').val();
+					var splitId = id.split("|");
+					if(splitId.length == 2) {
+						if(splitId[1] == 'print') {
+							price = $(jqueryStr).find('strong.cC1').html();
+						}
+					}
+				}	
+			}
 			
-        	price = price.replace(/,/g,"");
+			price = price.replace(/,/g,"");
         	price = price.replace(/원/g, "");
         	return price;
         },
         
 		getEbookPrice: function() {
-			var price = "0원";
-			$('div.pricebar2 > strong.cC1').each(function(index) {
-				if(index==0) {
-					price = $(this).text();
-				}
-			});
+			var price = '0원';
+			var type = bookInfo.hanbit.getBookType();
+			if(type == 'ebook') {
+				var priceArea = $('div.pricebar2').html();
+				var splitArray = priceArea.split('<br>');
+
+				for(i=0 , len =splitArray.length ; i < len ; ++i) {
+					var jqueryStr = "<div>" + splitArray[i] + "</div>"; 
+					var id = $(jqueryStr).find('input[type="radio"]').val();
+					var splitId = id.split("|");
+					if(splitId.length == 2) {
+						if(splitId[1] == 'ebook') {
+							price = $(jqueryStr).find('strong.cC1').html();
+						}
+					}
+				}	
+			}
 			
-        	price = price.replace(/,/g,"");
+			price = price.replace(/,/g,"");
         	price = price.replace(/원/g, "");
         	return price;
 		},
 
 		getISBN13: function(document) {
-			var isbn13 = '';
-			$('input[name="productid"]').each(function(index) {
-				if(index==0) {
-					isbn13 = $(this).val();
+			var isbn13 = 'no isbn';
+			var type = bookInfo.hanbit.getBookType();
+			if(type == 'ebook') {
+				$('input[name="productid"]').each(function(index) {
+					if(index==0) {
+						isbn13 = $(this).val();
+					}
+				});
+				isbn13 = isbn13.split('|')[0];
+			} else if(type == 'book') {
+				var locationArray = location.href.split('isbn=');
+				if(locationArray.length == 2) {
+					return locationArray[1].replace(/-/g,'');
 				}
-			});
-			isbn13 = isbn13.split('|')[0];
+			}
+			
 			return isbn13;
 		},
 
