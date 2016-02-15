@@ -4,6 +4,7 @@ checkitout.request_book = {
 	cookieBook : {},
 	renderCount : 0,
 	isAmazone : false,
+	isYes24 : false,
 
 	init: function(){
 		var that = checkitout.request_book;
@@ -190,48 +191,66 @@ checkitout.request_book = {
 		checkitout.request_book.renderView();
 	},
 
+	renderBookType: function(bookType) {
+		checkitout.request_book.cookieBook.bookType = bookType;
+		checkitout.request_book.renderView();
+	},
+
 	renderView: function(){
-		if(++checkitout.request_book.renderCount == 8){
+		if(++checkitout.request_book.renderCount == 9){
+			var tmpPrice;
 			var that = checkitout.request_book;
 			var bookInfo = checkitout.request_book.cookieBook;
 
 			var amazoneRex = new RegExp("www.amazon.com\/.*");
+			var yes24Rex = new RegExp("www.yes24.com\/.*");
+
+			var $price = $('#price');
+			var $btn_ebook = $('#btn_ebook');
+
 			that.isAmazon = amazoneRex.test(bookInfo.url);
+			that.isYes24 = yes24Rex.test(bookInfo.url);
 
 			$('#book_name').text(bookInfo.bookName);
 			$('#mainImage').attr("src", bookInfo.imgUrl);
 
+			if(that.isYes24 && bookInfo.bookType.toLowerCase() == 'ebook'){
+				tmpPrice = bookInfo.price;
+				bookInfo.ebookPrice = tmpPrice;
+				bookInfo.price = 0;
+			}
+
 			if(bookInfo.ebookPrice != 0) {
 				if(bookInfo.price == 0){
 					if(that.isAmazon){
-						$('#price').text("$" + bookInfo.ebookPrice.format());
+						$price.text("$" + bookInfo.ebookPrice.format());
 					}
 					else{
-						$('#price').text(bookInfo.ebookPrice.format() + "원");
+						$price.text(bookInfo.ebookPrice.format() + "원");
 					}
 
 					$('#checkbox-label').addClass('is-checked');
-					$('#btn_ebook').prop('disabled', true);
+					$btn_ebook.prop('disabled', true);
 					checkitout.request_book.cookieBook.bookType = 'ebook';
 				}
 				else{
 					if(that.isAmazon){
-						$('#price').text("$" + bookInfo.price.format());
+						$price.text("$" + bookInfo.price.format());
 					}
 					else{
-						$('#price').text(bookInfo.price.format() + "원");
+						$price.text(bookInfo.price.format() + "원");
 					}
 					checkitout.request_book.cookieBook.bookType = 'book';
 				}
 			}
 			else{
 				if(that.isAmazon){
-					$('#price').text("$" + bookInfo.price.format());
+					$price.text("$" + bookInfo.price.format());
 				}
 				else{
-					$('#price').text(bookInfo.price.format() + "원");
+					$price.text(bookInfo.price.format() + "원");
 				}
-				$('#btn_ebook').prop('disabled', true);
+				$btn_ebook.prop('disabled', true);
 				$('#btn_ebook_text').css('color','grey');
 				checkitout.request_book.cookieBook.bookType = 'book';
 			}
@@ -336,5 +355,11 @@ chrome.extension.onMessage.addListener(function(request, sender) {
 chrome.extension.onMessage.addListener(function(request, sender) {
 	if (request.action == "getAuthor") {
 		checkitout.request_book.renderAuthor(request.source);
+	}
+});
+
+chrome.extension.onMessage.addListener(function(request, sender) {
+	if (request.action == "getBookType") {
+		checkitout.request_book.renderBookType(request.source);
 	}
 });

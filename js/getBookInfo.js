@@ -59,9 +59,19 @@ var bookInfo = {
 			action: "getAuthor",
 			source: obj.getAuthor()
 		});
+
+		chrome.extension.sendMessage({
+			action: "getBookType",
+			source: obj.getBookType()
+		});
 	},
 
 	yes24: {
+
+		getBookType: function() {
+			var type = $('.rkeyL')[0].innerHTML;
+			return type;
+		},
 
 		getBookName: function() {
 			var title = $('#title > h1 > a').text();
