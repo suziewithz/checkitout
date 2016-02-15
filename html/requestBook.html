@@ -1,132 +1,139 @@
 <!doctype html>
 <html lang="">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Starter Kit</title>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Starter Kit</title>
 
-    <!-- Web Application Manifest -->
-    <link rel="manifest" href="manifest.json">
+  <!-- Web Application Manifest -->
+  <link rel="manifest" href="manifest.json">
 
-    <!-- Material Design icons -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <!-- Material Design icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-    <!-- Your styles -->
-    <link rel="stylesheet" href="../css/default.css">
-    <link rel="stylesheet" href="../css/material.min.css">
+  <!-- Your styles -->
+  <link rel="stylesheet" href="../css/default.css">
+  <link rel="stylesheet" href="../css/material.min.css">
 
-  </head>
-  <body class="mdl-checkit mdl-base">
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-      <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
-        <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
-          <a id="btn_go_to_request" href="#overview" class="mdl-layout__tab is-active">신청하기</a>
-          <a id="btn_go_to_history" href="#history" class="mdl-layout__tab">신청내역</a>
-          <a id="btn_go_to_cart" href="#features" class="mdl-layout__tab">찜목록</a>
+</head>
+<body class="mdl-checkit mdl-base">
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
+    <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
+      <a id="btn_go_to_request" href="#overview" class="mdl-layout__tab is-active">신청하기</a>
+      <a id="btn_go_to_history" href="#history" class="mdl-layout__tab">신청내역</a>
+      <a id="btn_go_to_cart" href="#features" class="mdl-layout__tab">찜목록</a>
+    </div>
+  </header>
+  <main class="mdl-layout__content mdl-color-text--grey-600">
+
+    <div class="parent-box mdl-grid is-active" id="overview">
+
+      <div class="demo-card-image mdl-card mdl-shadow--2dp mdl-cell mdl-cell--3-col">
+        <div class="mdl-card__title mdl-card--expand padding-zero">
+          <img id="mainImage"/>
         </div>
-      </header>
-      <main class="mdl-layout__content mdl-color-text--grey-600">
+        <div class="mdl-card__actions">
+          <span id="bookType" class="demo-card-image__filename"></span>
+        </div>
+      </div>
 
-        <div class="parent-box mdl-grid is-active" id="overview">
-
-            <div class="demo-card-image mdl-card mdl-shadow--2dp mdl-cell mdl-cell--3-col">
-              <div class="mdl-card__title mdl-card--expand padding-zero">
-                <img id="mainImage"/>
-              </div>
-              <div class="mdl-card__actions">
-                <span id="bookType" class="demo-card-image__filename"></span>
-              </div>
-            </div>
-
-            <div class="demo-card-event mdl-card mdl-shadow--2dp mdl-cell mdl-cell--5-col">
-              <div class="mdl-card__title mdl-card--expand">
-                <h4 id="book_name">
-                </h4>
-              </div>
-
-              <div class="mdl-card__title mdl-card--expand">
-                <div>
-                  <label id='checkbox-label' class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-                    <input type="checkbox" id="btn_ebook" class="mdl-checkbox__input">
-                    <span id='btn_ebook_text' class="mdl-checkbox__label">eBook</span>
-                  </label>
-                </div>
-              </div>
-
-              <div class="mdl-card__title mdl-card--expand">
-                <div class="mdl-price" id="price">
-                </div>
-              </div>
-
-              <div id="btn_request_book" class="mdl-card__actions mdl-card--borde mdl-book-request-bottom mdl-button--accent mdl-button mdl-button--colored mdl-book-bottom-menu">
-                <a class="mdl-button mdl-js-button mdl-book-request-bottom-text">
-                  Request
-                </a>
-                <div class="mdl-layout-spacer"></div>
-                <i id="btn_request_book_icon" class="material-icons">keyboard_arrow_right</i>
-              </div>
-            </div>
-
-            <div class="demo-card-event mdl-order-card mdl-shadow--2dp mdl-cell mdl-cell--5-col mdl-order">
-
-              <div class="mdl-card__title mdl-card--border">
-                  <span id="team_id_text"></span>
-              </div>
-
-              <div id="credit_amount" class="mdl-card__title mdl-card--border mdl-crdit">
-              </div>
-
-              <div id="btn_cart_book" class="mdl-card__actions mdl-card--borde mdl-book-request-bottom mdl-button--accent mdl-button mdl-button--colored mdl-book-bottom-menu mdl-btn-cart">
-                <a class="mdl-button mdl-js-button mdl-book-request-bottom-text">
-                  Cart
-                </a>
-                <div class="mdl-layout-spacer"></div>
-                <i class="material-icons">keyboard_arrow_right</i>
-              </div>
-
-              <div id="btn_order_book"  class="mdl-card__actions mdl-card--borde mdl-book-request-bottom mdl-button--accent mdl-button mdl-button--colored mdl-book-bottom-menu mdl-btn-order">
-                <a class="mdl-button mdl-js-button mdl-book-request-bottom-text">
-                  Order
-                </a>
-                <div class="mdl-layout-spacer"></div>
-                <i class="material-icons">keyboard_arrow_right</i>
-              </div>
-
-            </div>
-
+      <div class="demo-card-event mdl-card mdl-shadow--2dp mdl-cell mdl-cell--5-col">
+        <div class="mdl-card__title mdl-card--expand">
+          <h4 id="book_name">
+          </h4>
         </div>
 
-        <dialog class="mdl-dialog">
-          <h4 class="mdl-dialog__title">Request this Book?</h4>
-          <div class="mdl-dialog__content">
-            <p>
-              Allowing us to collect data will let us get you the information you want faster.
-            <p>
+        <div class="mdl-card__title mdl-card--expand mdl-card-padding" style="height: 30px;">
+          <div>
+            <label id='checkbox-label' class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+              <input type="checkbox" id="btn_ebook" class="mdl-checkbox__input">
+              <span id='btn_ebook_text' class="mdl-checkbox__label">eBook</span>
+            </label>
           </div>
-          <div class="mdl-dialog__actions">
-            <button type="button" class="mdl-button confirm">Confirm</button>
-            <button type="button" class="mdl-button close">Cancle</button>
+          <div class="mdl-price" id="author" style="padding-top: 4px;">
           </div>
-        </dialog>
-
-        <div id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
-          <div class="mdl-snackbar__text"></div>
-          <button class="mdl-snackbar__action" type="button"></button>
         </div>
 
-      </main>
+        <div class="mdl-card__title mdl-card--expand mdl-card-padding">
+          <div class="mdl-price" id="price">
+          </div>
+        </div>
+
+        <!--<div class="mdl-card__title mdl-card&#45;&#45;expand">-->
+          <!--<div class="mdl-price" id="price">-->
+          <!--</div>-->
+        <!--</div>-->
+
+        <div id="btn_request_book" class="mdl-card__actions mdl-card--borde mdl-book-request-bottom mdl-button--accent mdl-button mdl-button--colored mdl-book-bottom-menu">
+          <a class="mdl-button mdl-js-button mdl-book-request-bottom-text">
+            Request
+          </a>
+          <div class="mdl-layout-spacer"></div>
+          <i id="btn_request_book_icon" class="material-icons">keyboard_arrow_right</i>
+        </div>
+      </div>
+
+      <div class="demo-card-event mdl-order-card mdl-shadow--2dp mdl-cell mdl-cell--5-col mdl-order">
+
+        <div class="mdl-card__title mdl-card--border">
+          <span id="team_id_text"></span>
+        </div>
+
+        <div id="credit_amount" class="mdl-card__title mdl-card--border mdl-crdit">
+        </div>
+
+        <div id="btn_cart_book" class="mdl-card__actions mdl-card--borde mdl-book-request-bottom mdl-button--accent mdl-button mdl-button--colored mdl-book-bottom-menu mdl-btn-cart">
+          <a class="mdl-button mdl-js-button mdl-book-request-bottom-text">
+            Cart
+          </a>
+          <div class="mdl-layout-spacer"></div>
+          <i class="material-icons">keyboard_arrow_right</i>
+        </div>
+
+        <div id="btn_order_book"  class="mdl-card__actions mdl-card--borde mdl-book-request-bottom mdl-button--accent mdl-button mdl-button--colored mdl-book-bottom-menu mdl-btn-order">
+          <a class="mdl-button mdl-js-button mdl-book-request-bottom-text">
+            Order
+          </a>
+          <div class="mdl-layout-spacer"></div>
+          <i class="material-icons">keyboard_arrow_right</i>
+        </div>
+
+      </div>
+
     </div>
 
-    <link rel="stylesheet" href="../css/check-itout.css">
+    <dialog class="mdl-dialog">
+      <h4 class="mdl-dialog__title">Request this Book?</h4>
+      <div class="mdl-dialog__content">
+        <p>
+          Allowing us to collect data will let us get you the information you want faster.
+        <p>
+      </div>
+      <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button confirm">Confirm</button>
+        <button type="button" class="mdl-button close">Cancle</button>
+      </div>
+    </dialog>
 
-    <script src="../js/material.min.js"></script>
-    <script src="../js/jquery.min.js"></script>
-    <script src="../js/storage.js"></script>
-    <script src="../js/checkitout.js"></script>
-    <script src="../js/checkitout-check-url.js"></script>
-    <script src="../js/checkitout-check-session.js"></script>
-    <script src="../js/checkitout-request-book.js"></script>
-  </body>
+    <div id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
+      <div class="mdl-snackbar__text"></div>
+      <button class="mdl-snackbar__action" type="button"></button>
+    </div>
+
+  </main>
+</div>
+
+<link rel="stylesheet" href="../css/check-itout.css">
+
+<script src="../js/material.min.js"></script>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/storage.js"></script>
+<script src="../js/checkitout.js"></script>
+<script src="../js/checkitout-check-url.js"></script>
+<script src="../js/checkitout-check-session.js"></script>
+<script src="../js/checkitout-request-book.js"></script>
+</body>
 </html>

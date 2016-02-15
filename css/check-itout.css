@@ -136,8 +136,12 @@ body {
 }
 
 .mdl-book-bottom-menu {
-	background: #5C6BC0;
+	background: #1A237E;
 	height: 40px;!important;
+}
+
+.mdl-book-bottom-price div {
+	color: white;
 }
 
 .mdl-order {
@@ -193,4 +197,8 @@ body {
 	width: 10px;
 	height: 10px;
 	border-radius: 0;
+}
+
+.mdl-card-padding {
+	padding: 0 16px 0 16px
 }

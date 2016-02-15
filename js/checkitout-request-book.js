@@ -216,6 +216,7 @@ checkitout.request_book = {
 			that.isYes24 = yes24Rex.test(bookInfo.url);
 
 			$('#book_name').text(bookInfo.bookName);
+			$('#author').text(bookInfo.author);
 			$('#mainImage').attr("src", bookInfo.imgUrl);
 
 			if(that.isYes24 && bookInfo.bookType.toLowerCase() == 'ebook'){
