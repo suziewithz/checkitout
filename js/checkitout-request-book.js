@@ -2,6 +2,8 @@ checkitout.request_book = {
 
 	baseUrl : 'http://local.coupang.com:9999',
 	cookieBook : {},
+	renderCount : 0,
+	isAmazone : false,
 
 	init: function(){
 		var that = checkitout.request_book;
@@ -129,11 +131,10 @@ checkitout.request_book = {
 				$bookType.removeClass('bookType-ebook');
 				$focusHelper.css('background-color','transparent');
 
-				type = checkitout.request_book.cookieBook.bookType = '도서';
+				type = checkitout.request_book.cookieBook.bookType = 'book';
 				price = checkitout.request_book.cookieBook.price;
 
 				$bookType.text(type);
-				$price.text(price.format() + "원");
 			}
 			else{
 				$bookType.addClass('bookType-ebook');
@@ -143,48 +144,93 @@ checkitout.request_book = {
 				price = checkitout.request_book.cookieBook.ebookPrice;
 
 				$bookType.text(type);
+			}
+
+			if(that.isAmazon){
+				$price.text("$" + price.format());
+			}
+			else{
 				$price.text(price.format() + "원");
 			}
 		});
 	},
 
-	renderPrice: function(priceText){
-		$('#price').text(priceText + "원")
-		checkitout.request_book.cookieBook.price = priceText.split(',').join("");
+	renderPrice: function(price){
+		checkitout.request_book.cookieBook.price = price;
+		checkitout.request_book.renderView();
 	},
 
 	renderBookName : function(bookText){
-		$('#book_name').text(bookText);
 		checkitout.request_book.cookieBook.bookName = bookText;
+		checkitout.request_book.renderView();
 	},
 
 	renderISBN13: function(isbn13) {
-		$('#isbn13').text("isbn :" + isbn13);
 		checkitout.request_book.cookieBook.isbn13 = isbn13;
+		checkitout.request_book.renderView();
 	},
 
 	renderUrl: function(url) {
-		$('#url').text("url : " + url);
 		checkitout.request_book.cookieBook.url = url;
+		checkitout.request_book.renderView();
 	},
 
 	renderImg: function(imgUrl) {
-		$('#mainImage').attr("src", imgUrl);
 		checkitout.request_book.cookieBook.imgUrl = imgUrl;
-	},
-
-	renderBookType: function(type) {
-		$('#bookType').text(type);
-		checkitout.request_book.cookieBook.bookType = type;
+		checkitout.request_book.renderView();
 	},
 
 	renderEbookPrice: function(ebookPrice) {
-		if(ebookPrice != "") {
-			checkitout.request_book.cookieBook.ebookPrice = ebookPrice.split(',').join("");
-		}
-		else{
-			$('#btn_ebook').prop('disabled', true);
-			$('#btn_ebook_text').css('color','grey');
+		checkitout.request_book.cookieBook.ebookPrice = ebookPrice;
+		checkitout.request_book.renderView();
+	},
+
+	renderView: function(){
+		if(++checkitout.request_book.renderCount == 7){
+			var that = checkitout.request_book;
+			var bookInfo = checkitout.request_book.cookieBook;
+
+			var amazoneRex = new RegExp("www.amazon.com\/.*");
+			that.isAmazon = amazoneRex.test(bookInfo.url);
+
+			$('#book_name').text(bookInfo.bookName);
+			$('#mainImage').attr("src", bookInfo.imgUrl);
+
+			if(bookInfo.ebookPrice != 0) {
+				if(bookInfo.price == 0){
+					if(that.isAmazon){
+						$('#price').text("$" + bookInfo.ebookPrice.format());
+					}
+					else{
+						$('#price').text(bookInfo.ebookPrice.format() + "원");
+					}
+
+					$('#checkbox-label').addClass('is-checked');
+					$('#btn_ebook').prop('disabled', true);
+					checkitout.request_book.cookieBook.bookType = 'ebook';
+				}
+				else{
+					if(that.isAmazon){
+						$('#price').text("$" + bookInfo.price.format());
+					}
+					else{
+						$('#price').text(bookInfo.price.format() + "원");
+					}
+					checkitout.request_book.cookieBook.bookType = 'book';
+				}
+			}
+			else{
+				if(that.isAmazon){
+					$('#price').text("$" + bookInfo.price.format());
+				}
+				else{
+					$('#price').text(bookInfo.price.format() + "원");
+				}
+				$('#btn_ebook').prop('disabled', true);
+				$('#btn_ebook_text').css('color','grey');
+				checkitout.request_book.cookieBook.bookType = 'book';
+			}
+			$('#bookType').text(bookInfo.bookType);
 		}
 	},
 
@@ -279,11 +325,5 @@ chrome.extension.onMessage.addListener(function(request, sender) {
 chrome.extension.onMessage.addListener(function(request, sender) {
 	if (request.action == "getImg") {
 		checkitout.request_book.renderImg(request.source);
-	}
-});
-
-chrome.extension.onMessage.addListener(function(request, sender) {
-	if (request.action == "getBookType") {
-		checkitout.request_book.renderBookType(request.source);
 	}
 });

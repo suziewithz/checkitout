@@ -1,16 +1,20 @@
 checkitout.checkUrl = {
 	renderView: function(curUrl){
+		var $contents = $('.mdl-layout__content');
+
 		var yes24 = 'www.yes24.com/24/goods';
 		var yes24Ebook = 'www.yes24.com/24/Goods';
 		var hanbit = 'www.hanbit.co.kr/ebook/look';
 		var hanbitEbook = 'www.hanbit.co.kr/book/look';
-		var $contents = $('.mdl-layout__content');
-
+		var amazone = 'www.amazon.com/gp/product';
+		var amazoneRex = new RegExp("www.amazon.com\/.*\/dp\/.*");
 
 		if(curUrl.indexOf(yes24) == -1
 			&& curUrl.indexOf(yes24Ebook) == -1
 			&& curUrl.indexOf(hanbit) == -1
-			&& curUrl.indexOf(hanbitEbook) == -1){
+			&& curUrl.indexOf(hanbitEbook) == -1
+			&& curUrl.indexOf(amazone) == -1
+			&& !amazoneRex.test(curUrl)){
 			$contents.empty();
 			var tmp =
 				'<div class="login-box is-active" id="overview">'
