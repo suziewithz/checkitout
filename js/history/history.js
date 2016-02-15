@@ -56,6 +56,18 @@ require(["template",
         });
     }();
 
+    $('#btn_go_to_request').click(function () {
+        $(location).attr('href', 'requestBook.html');
+    });
+
+    $('#btn_go_to_cart').click(function () {
+        $(location).attr('href', 'cart.html');
+    });
+
+    $('#btn_go_to_history').click(function () {
+        $(location).attr('href', 'history.html');
+    });
+
 });
 
 requirejs.config({
