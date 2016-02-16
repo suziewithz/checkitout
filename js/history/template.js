@@ -14,6 +14,10 @@ define(["text!/html/template/history-list.hbs",
     var listTemplate = Handlebars.compile(LIST_TEMPLATE);
 
     var setBooks = function (data) {
+        if (data.length > 0) {
+            $('#empty').remove();
+        }
+
         setData(data);
 
         loadingScreen.hide();
