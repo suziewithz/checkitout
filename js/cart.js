@@ -140,13 +140,17 @@ var cartPage = {
             $('.dialog_ebook_info').hide();
         } 
 
-        if(checkitout.member.totalAmount > cartPage.limitCredit) {
+        if(checkitout.member.totalAmount + price > cartPage.limitCredit) {
             $('.dialog_alert_credit').show();
         } else {
             $('.dialog_alert_credit').hide();
         }
 
-        $('.dialog_alert_reject').hide();
+        if(book.isInappropriate) {
+            $('.dialog_alert_reject').show();
+        } else {
+            $('.dialog_alert_reject').hide();
+        }
         
         dialog.find('#dialog_before_credit').html("이전 누적금액 : " + checkitout.member.totalAmount.format() + "원");
         dialog.find('#dialog_price').html("price : " + price.format() + "원");

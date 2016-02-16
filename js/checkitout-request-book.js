@@ -46,9 +46,6 @@ checkitout.request_book = {
 
 	addEvent: function(){
 		var that = checkitout.request_book;
-		$('button#addCart').click(function() {
-			
-		});
 
 		var showToastButton = document.querySelector('#btn_request_book');
 		var snackbarContainer = document.querySelector('#demo-toast-example');
@@ -77,27 +74,53 @@ checkitout.request_book = {
 		});
 
 		$('#btn_cart_book').click(function(){
-			var date = new Date();
-	        checkitout.request_book.cookieBook.createdDate = date.getFullYear() + '년 ' + date.getMonth() + "월 " + date.getDate() + "일 " + date.getHours() + "시 " + date.getMinutes() + "분";
-	        cartStorage.addItem(checkitout.request_book.cookieBook, function(data) {
-	            if($.isEmptyObject(data)) {
-					message = {
-						message: checkitout.request_book.cookieBook.bookName +' is added to cart',
-						timeout: 800,
-						actionText: 'done',
-						actionHandler: null,
-					};
-					snackbarContainer.MaterialSnackbar.showSnackbar(message);
-	            } else {
-					message = {
-						message: checkitout.request_book.cookieBook.bookName +' is already added',
-						timeout: 800,
-						actionText: 'done',
-						actionHandler: null,
-					};
-					snackbarContainer.MaterialSnackbar.showSnackbar(message);
-	            }
-	        });
+			$.ajax({
+                url: checkitout.request_book.baseUrl + '/api/v1/book/' + checkitout.request_book.cookieBook.isbn13 ,
+                method: "GET",
+                dataType:"json",
+                // data: { booksDto: JSON.stringify(booksDto), bookType: book.bookType, price: price },
+                success: function (result, status, xhr) {
+                    if (xhr.status == 200) {
+                        if (result != null) {
+                            var rcode = result.rcode;
+                            if(rcode == 'RET0000'){
+                            	if(result.rdata != null) {
+                            		bookList = result.rdata.entityList;
+                            		if(bookList !=null && bookList.length != 0) {
+                            			bookDto = bookList[0];
+                            			checkitout.request_book.cookieBook.isInappropriate = bookDto.inappropriate;
+                            		}
+                            	}
+                            }
+                        }
+
+                        var date = new Date();
+				        checkitout.request_book.cookieBook.createdDate = date.getFullYear() + '년 ' + date.getMonth() + "월 " + date.getDate() + "일 " + date.getHours() + "시 " + date.getMinutes() + "분";
+				        cartStorage.addItem(checkitout.request_book.cookieBook, function(data) {
+				            if($.isEmptyObject(data)) {
+								message = {
+									message: checkitout.request_book.cookieBook.bookName +' is added to cart',
+									timeout: 800,
+									actionText: 'done',
+									actionHandler: null,
+								};
+								snackbarContainer.MaterialSnackbar.showSnackbar(message);
+				            } else {
+								message = {
+									message: checkitout.request_book.cookieBook.bookName +' is already added',
+									timeout: 800,
+									actionText: 'done',
+									actionHandler: null,
+								};
+								snackbarContainer.MaterialSnackbar.showSnackbar(message);
+				            }
+				        });
+                    }
+                },
+                error: function () {
+
+                }
+            });    
 		});
 
 		$('#btn_order_book').click(function(){
