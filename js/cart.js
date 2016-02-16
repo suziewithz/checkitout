@@ -21,6 +21,7 @@ function splitIdAndType(key) {
 }
 
 var cartPage = {
+    baseUrl : 'http://local.coupang.com:9999',
     cartList:{},
     init: function() {
         Number.prototype.format = function(){
@@ -158,7 +159,7 @@ var cartPage = {
                 }
                 
                 dialog.querySelector('.order').addEventListener('click', function() {
-
+                    cartPage.orderBook($('dialog').find('button.order').val());
                 });
                 dialog.querySelector('.close').addEventListener('click', function() {
                     dialog.close();
@@ -171,16 +172,82 @@ var cartPage = {
     },
     setDialogContent : function(book) {
         var dialog = $('dialog');
-        dialog.find('div#dialog_order_title').html("Order [" + book.bookType + "]");
+        var title = '<button class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">shopping basket</i></button>';
+        dialog.find('div#dialog_order_title').html(title + "Order [" + book.bookType + "]");
         var title = dialog.find('div#dialog_book_title').html(book.bookName);
-        var price ="";
-        if(book.bookType.toLowerCase() == 'ebook')
-            price = book.ebookPrice.format();
-        else 
-            price = book.price.format();
-        dialog.find('#mdl-dialog__price').html(price + "원");
+        var price = 0;
+        if(book.bookType == 'ebook') {
+            price = book.ebookPrice;
+            $('.dialog_ebook_info').show();
+        }
+        else {
+            price = book.price;
+            $('.dialog_ebook_info').hide();
+        } 
+
+        if(checkitout.member.credit < price) {
+            $('.dialog_alert_credit').show();
+        } else {
+            $('.dialog_alert_credit').hide();
+        }
+
+        $('.dialog_alert_reject').hide();
+        
+        dialog.find('#dialog_before_credit').html("before credit : " + checkitout.member.credit.format() + "원");
+        dialog.find('#dialog_price').html("price : " + price.format() + "원");
+        dialog.find('#dialog_after_credit').html("after credit : " + (checkitout.member.credit - price).format() + "원");
         dialog.find('button.order').val(book.isbn13 + "|" + book.bookType);
 
+    },
+    orderBook: function(key) {
+        console.log(key);
+        var book = cartPage.cartList[key];
+
+        if(book == null) {
+            cartPage.init();
+        } else {
+            var price;
+
+            if(book.bookType.toLowerCase() == 'ebook'){
+                price = book.ebookPrice;
+            }
+            else{
+                price = book.price;
+            }
+
+            var booksDto = {
+                "bookSrl": 0,
+                "isbn": book.isbn13,
+                "title": book.bookName,
+                "author": book.author,
+                "url": book.url,
+                "isInappropriate": "false"
+            };
+
+            $.ajax({
+                url: cartPage.baseUrl + '/api/v1/order/new',
+                method: "POST",
+                dataType:"json",
+                data: { booksDto: JSON.stringify(booksDto), bookType: book.bookType, price: price },
+                success: function (result, status, xhr) {
+                    if (xhr.status == 200) {
+                        if (result != null) {
+                            var rcode = result.rcode;
+                            if(rcode == 'RET0000'){
+                                console.log('성공하였다');
+                            }       
+                            else{
+                                $(location).attr('href', '/html/signin.html');
+                            }
+                        }
+                    }
+                },
+                error: function () {
+
+                }
+            });    
+        }
+        
     },
     focusOrCreateTab : function(url) {
       chrome.windows.getAll({'populate':true}, function(windows) {
@@ -215,4 +282,16 @@ var cartPage = {
 
 $(document).ready( function() {
     cartPage.init();
+
+    $('#btn_go_to_request').click(function () {
+        $(location).attr('href', 'requestBook.html');
+    });
+
+    $('#btn_go_to_cart').click(function () {
+        $(location).attr('href', 'cart.html');
+    });
+
+    $('#btn_go_to_history').click(function () {
+        $(location).attr('href', 'history.html');
+    });
 });

@@ -202,3 +202,7 @@ body {
 .mdl-card-padding {
 	padding: 0 16px 0 16px
 }
+
+.mdl-js-snackbar.mdl-snackbar {
+	width: 100%;
+}
