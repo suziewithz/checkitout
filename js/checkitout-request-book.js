@@ -46,9 +46,6 @@ checkitout.request_book = {
 
 	addEvent: function(){
 		var that = checkitout.request_book;
-		$('button#addCart').click(function() {
-			
-		});
 
 		var showToastButton = document.querySelector('#btn_request_book');
 		var snackbarContainer = document.querySelector('#demo-toast-example');
@@ -77,41 +74,66 @@ checkitout.request_book = {
 		});
 
 		$('#btn_cart_book').click(function(){
-			var date = new Date();
-	        checkitout.request_book.cookieBook.createdDate = date.getFullYear() + '년 ' + date.getMonth() + "월 " + date.getDate() + "일 " + date.getHours() + "시 " + date.getMinutes() + "분";
-	        cartStorage.addItem(checkitout.request_book.cookieBook, function(data) {
-	            if($.isEmptyObject(data)) {
-					message = {
-						message: checkitout.request_book.cookieBook.bookName +' is added to cart',
-						timeout: 800,
-						actionText: 'done',
-						actionHandler: null,
-					};
-					snackbarContainer.MaterialSnackbar.showSnackbar(message);
-	            } else {
-					message = {
-						message: checkitout.request_book.cookieBook.bookName +' is already added',
-						timeout: 800,
-						actionText: 'done',
-						actionHandler: null,
-					};
-					snackbarContainer.MaterialSnackbar.showSnackbar(message);
-	            }
-	        });
+			$.ajax({
+                url: checkitout.request_book.baseUrl + '/api/v1/book/' + checkitout.request_book.cookieBook.isbn13 ,
+                method: "GET",
+                dataType:"json",
+                // data: { booksDto: JSON.stringify(booksDto), bookType: book.bookType, price: price },
+                success: function (result, status, xhr) {
+                    if (xhr.status == 200) {
+                        if (result != null) {
+                            var rcode = result.rcode;
+                            if(rcode == 'RET0000'){
+                            	if(result.rdata != null) {
+                            		bookList = result.rdata.entityList;
+                            		if(bookList !=null && bookList.length != 0) {
+                            			bookDto = bookList[0];
+                            			checkitout.request_book.cookieBook.isInappropriate = bookDto.inappropriate;
+                            		}
+                            	}
+                            }
+                        }
+
+                        var date = new Date();
+				        checkitout.request_book.cookieBook.createdDate = date.getFullYear() + '년 ' + date.getMonth() + "월 " + date.getDate() + "일 " + date.getHours() + "시 " + date.getMinutes() + "분";
+				        cartStorage.addItem(checkitout.request_book.cookieBook, function(data) {
+				            if($.isEmptyObject(data)) {
+								message = {
+									message: checkitout.request_book.cookieBook.bookName +' is added to cart',
+									timeout: 800,
+									actionText: 'done',
+									actionHandler: null,
+								};
+								snackbarContainer.MaterialSnackbar.showSnackbar(message);
+				            } else {
+								message = {
+									message: checkitout.request_book.cookieBook.bookName +' is already added',
+									timeout: 800,
+									actionText: 'done',
+									actionHandler: null,
+								};
+								snackbarContainer.MaterialSnackbar.showSnackbar(message);
+				            }
+				        });
+                    }
+                },
+                error: function () {
+
+                }
+            });    
 		});
 
 		$('#btn_order_book').click(function(){
 			var data, handler;
-			var price = parseInt(that.cookieBook.price);
-			var availableCredit = checkitout.member.credit;
+			var totalAmount = checkitout.member.totalAmount;
 
-			if(price > availableCredit){
+			if(50000 < totalAmount){
 				handler = function(event) {
 					that.dialog.showModal();
 				};
 
 				data = {
-					message: '1. The lack of credit is "' + ((availableCredit - price)*-1).format() + ' won"'
+					message: '1. The totalAmount is "' + (totalAmount).format() + ' won"'
 								+ ' - You must contact admin.'
 								+ ' 2. This book is inaprorpiate book',
 					timeout: 4000,
@@ -216,6 +238,7 @@ checkitout.request_book = {
 			that.isYes24 = yes24Rex.test(bookInfo.url);
 
 			$('#book_name').text(bookInfo.bookName);
+			$('#author').text(bookInfo.author);
 			$('#mainImage').attr("src", bookInfo.imgUrl);
 
 			if(that.isYes24 && bookInfo.bookType.toLowerCase() == 'ebook'){
@@ -283,25 +306,55 @@ checkitout.request_book = {
 		};
 
 		$.ajax({
-			url: checkitout.request_book.baseUrl + '/api/v1/order/new',
+			url: checkitout.request_book.baseUrl + '/api/v1/order/check',
 			method: "POST",
-			dataType:"json",
-			data: { booksDto: JSON.stringify(booksDto), bookType: book.bookType, price: price },
+			data: {bookIsbn: booksDto.isbn},
 			success: function (result, status, xhr) {
-				if (xhr.status == 200) {
-					if (result != null) {
-						var rcode = result.rcode;
-						if(rcode == 'RET0000'){
+				if (result == 'ok') {
+					$.ajax({
+						url: checkitout.request_book.baseUrl + '/api/v1/order/new',
+						method: "POST",
+						dataType: "json",
+						data: {booksDto: JSON.stringify(booksDto), bookType: book.bookType, price: price},
+						success: function (result, status, xhr) {
+							if (xhr.status == 200) {
+								if (result != null) {
+									var rcode = result.rcode;
+									if (rcode == 'RET0000') {
+										message = {
+											message: 'Thanks!',
+											timeout: 2000,
+											actionText: 'done',
+											actionHandler: null,
+										};
+										document.querySelector('#demo-toast-example').MaterialSnackbar.showSnackbar(message);
+
+										setTimeout(function () {
+											$(location).attr('href', '/html/history.html');
+										}, 1000);
+									}
+									else {
+										$(location).attr('href', '/html/signin.html');
+									}
+								}
+							}
+						},
+						error: function () {
 
 						}
-						else{
-							$(location).attr('href', '/html/signin.html');
-						}
-					}
+					});
+				} else if (result == 'duplicate') {
+					message = {
+						message: 'This book is already ordered',
+						timeout: 2000,
+						actionText: 'done',
+						actionHandler: null,
+					};
+					document.querySelector('#demo-toast-example').MaterialSnackbar.showSnackbar(message);
 				}
 			},
 			error: function () {
-
+				console.log('error in /api/v1/order/check');
 			}
 		});
 	}

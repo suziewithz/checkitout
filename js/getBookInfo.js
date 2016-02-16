@@ -126,6 +126,19 @@ var bookInfo = {
 	},
 
 	hanbit: {
+
+		getBookType: function() {
+			var url = location.href; 
+			if(url.indexOf('/book/') != -1) {
+				return 'book';
+			}
+
+			if(url.indexOf('/ebook/') != -1) {
+				return 'ebook';
+			}
+			return 'undefined';
+		},
+
 		getBookName: function() {
 			var title = $('strong.tl').text();
 			return title;
@@ -207,10 +220,25 @@ var bookInfo = {
 		getImg: function() {
 			var imgUrl = $('div.ctl > div.t1 > img').attr('src');
 			return imgUrl
+		},
+
+		getAuthor: function() {
+			var author = $('div.bx > div.set > strong').text();
+			var authorSplit = author.split(']');
+			if(authorSplit.length == 2) {
+				author = authorSplit[1];
+			}
+			return author.trim();
+			//return "true";
 		}
 	},
 
 	amazon: {
+
+		getBookType: function() {
+
+		},
+
 		getBookName: function() {
 			var title = $('#productTitle').text();
 			return title;

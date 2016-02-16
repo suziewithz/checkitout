@@ -7,23 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>책 it out</title>
 
-    <style>
-        table.mdl-data-table {
-            width: 100%;
-        }
-
-        table.mdl-data-table th {
-            text-align: center;
-        }
-
-        #spinner {
-            width: 100%;
-            padding-top: 180px;
-            text-align: center;
-        }
-
-    </style>
-
     <link rel="stylesheet" href="../css/material.min.css">
     <link rel="stylesheet" href="../css/history.css">
     <link rel="stylesheet" href="../css/default.css">
@@ -34,23 +17,25 @@
 <body class="mdl-checkit mdl-color-text--grey-700 mdl-base">
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
-        <div class="mdl-layout--large-screen-only mdl-layout__header-row">
-        </div>
-        <div class="mdl-layout--large-screen-only mdl-layout__header-row">
-            <h3>신청내역</h3>
-        </div>
-        <div class="mdl-layout--large-screen-only mdl-layout__header-row">
-        </div>
         <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
             <a id="btn_go_to_request" href="#overview" class="mdl-layout__tab">신청하기</a>
             <a id="btn_go_to_history" href="#history" class="mdl-layout__tab is-active">신청내역</a>
             <a id="btn_go_to_cart" href="#features" class="mdl-layout__tab">찜목록</a>
+            <span id="webpage-link">
+                <a href="http://local.coupang.com:9999/" target="_blank">
+                    <i style="color:white" class="material-icons">open_in_new</i>
+                </a>
+            </span>
         </div>
     </header>
     <main class="mdl-layout__content">
         <div class="mdl-layout__tab-panel is-active" id="history">
             <div id="spinner">
                 <div class="mdl-spinner mdl-js-spinner is-active"></div>
+            </div>
+            <div id="empty">
+                <div class="icon material-icons">sentiment_neutral</div>
+                <div>신청 내역이 없습니다.</div>
             </div>
             <div id="message-toast" class="mdl-js-snackbar mdl-snackbar">
                 <div class="mdl-snackbar__text"></div>

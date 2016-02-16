@@ -1,27 +1,7 @@
-
-function setSnackBar(_message, _timeout, _actionHandler, _actionText) {
-    'use strict';
-    var data = {
-        message: _message,
-        timeout: _timeout,
-        actionHandler: _actionHandler,
-        actionText: _actionText
-    };
-    var snackbarContainer = document.querySelector('#snackbar');
-    snackbarContainer.MaterialSnackbar.showSnackbar(data);
-}
-function splitIdAndType(key) {
-    var splitArray = key.split('|');
-    
-    if(splitArray.length == 2) {
-        return splitArray;    
-    } else {
-        return [];  // error
-    }
-}
-
 var cartPage = {
+    baseUrl : 'http://local.coupang.com:9999',
     cartList:{},
+    limitCredit : 50000,
     init: function() {
         Number.prototype.format = function(){
             if(this==0) return 0;
@@ -40,10 +20,13 @@ var cartPage = {
 
             return num.format();
         };
-
+        cartPage.bindEvent();
+        cartPage.load();
+    },
+    load: function() {
         cartPage.loadList(function() {
             cartPage.makeList();
-            cartPage.bindEvent();
+            cartPage.bindDynamicEvent();
         });
     },
     loadList : function(callback) {
@@ -89,62 +72,15 @@ var cartPage = {
             $('#tip').html('<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"><button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored"><i class="material-icons">information</i></button>구매하려는 책을 클릭하면 구매 신청을 할 수 있습니다. :)</a>');
         }
     },
-    bindEvent : function() {
-
+    bindDynamicEvent : function() {
         $('button.button_url').click(function() {
             cartPage.focusOrCreateTab($(this).val());
         });
 
-        $('input#check_all').click(function() {
-            var isChecked = $(this).is(':checked') ? true : false;
-            $('input.check_row').each(function() {
-                $(this).prop('checked',isChecked);
-            });
-        });
-
-        $('input.check_row').click(function() {
-            var isChecked = $(this).is(':checked') ? true : false;
-            console.log(isChecked);
-            if(!isChecked) {
-                $('input#check_all').prop('checked', false);
-            } else {
-                cartPage.setCheckAll();   
-            }
-        });
-
         $('button.button_delete_item').click(function() {
             cartStorage.removeItems([$(this).val()], function() {
-                cartPage.init();
+                cartPage.load();
             });
-        });
-        $('button#button_delete_all').click(function() {
-            cartStorage.clear(function() {
-                cartPage.init();
-            });
-        });
-        $('button#button_delete').click(function() {
-            if($('input#check_all').is(':checked')) {
-                console.log("전체삭제");
-                cartStorage.clear(function() {
-                    console.log("클리어 성공");
-                    cartPage.init();
-                });
-            } else {
-                cartIsbnList = [];
-                $('input.check_row').each(function() {
-                    if($(this).is(':checked')) {
-                        cartIsbnList.push($(this).val());
-                    }
-                })
-                if(cartIsbnList.length == 0) {
-                    setSnackBar('체크된 아이템이 없습니다', 2000, null, '닫기');
-                } else {
-                    cartStorage.removeItems(cartIsbnList, function() {
-                        cartPage.init();
-                    });
-                }
-                
-            }
         });
 
         $('.mdl-card--expand, .mdl-card__actions').click(function() {
@@ -156,31 +92,128 @@ var cartPage = {
                 if (! dialog.showModal) {
                     dialogPolyfill.registerDialog(dialog);
                 }
-                
-                dialog.querySelector('.order').addEventListener('click', function() {
-
-                });
-                dialog.querySelector('.close').addEventListener('click', function() {
-                    dialog.close();
-                });    
-
                 dialog.showModal();
             }
             
         });
     },
+    bindEvent : function() {
+        $('#btn_go_to_request').click(function () {
+            $(location).attr('href', 'requestBook.html');
+        });
+
+        $('#btn_go_to_cart').click(function () {
+            $(location).attr('href', 'cart.html');
+        });
+
+        $('#btn_go_to_history').click(function () {
+            $(location).attr('href', 'history.html');
+        });
+        
+        $('button#button_delete_all').click(function() {
+            cartStorage.clear(function() {
+                cartPage.load();
+            });
+        });
+
+        $('.mdl-dialog__actions button.order').click(function() {
+            cartPage.orderBook($(this).val());
+        });
+
+        $('.mdl-dialog__actions button.close').click(function() {
+            var dialog = document.querySelector('dialog');
+            dialog.close();
+        });
+    },
     setDialogContent : function(book) {
         var dialog = $('dialog');
-        dialog.find('div#dialog_order_title').html("Order [" + book.bookType + "]");
+        var title = '<button class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">shopping basket</i></button>';
+        dialog.find('div#dialog_order_title').html(title + "Order [" + book.bookType + "]");
         var title = dialog.find('div#dialog_book_title').html(book.bookName);
-        var price ="";
-        if(book.bookType.toLowerCase() == 'ebook')
-            price = book.ebookPrice.format();
-        else 
-            price = book.price.format();
-        dialog.find('#mdl-dialog__price').html(price + "원");
-        dialog.find('button.order').val(book.isbn13 + "|" + book.bookType);
+        var price = 0;
+        if(book.bookType == 'ebook') {
+            price = book.ebookPrice;
+            $('.dialog_ebook_info').show();
+        }
+        else {
+            price = book.price;
+            $('.dialog_ebook_info').hide();
+        } 
 
+        if(checkitout.member.totalAmount + price > cartPage.limitCredit) {
+            $('.dialog_alert_credit').show();
+        } else {
+            $('.dialog_alert_credit').hide();
+        }
+
+        if(book.isInappropriate) {
+            $('.dialog_alert_reject').show();
+        } else {
+            $('.dialog_alert_reject').hide();
+        }
+        
+        dialog.find('#dialog_before_credit').html("이전 누적금액 : " + checkitout.member.totalAmount.format() + "원");
+        dialog.find('#dialog_price').html("price : " + price.format() + "원");
+        dialog.find('#dialog_after_credit').html("합산 누적금액 : " + (checkitout.member.totalAmount + price).format() + "원");
+        dialog.find('button.order').val(book.isbn13 + "|" + book.bookType);
+    },
+    closeDialog : function() {
+        var dialog = document.querySelector('dialog');
+        dialog.close();
+    },
+    orderBook: function(key) {
+        console.log(key);
+        var book = cartPage.cartList[key];
+
+        if(book == null) {
+            cartPage.load();
+        } else {
+            var price;
+
+            if(book.bookType.toLowerCase() == 'ebook'){
+                price = book.ebookPrice;
+            }
+            else{
+                price = book.price;
+            }
+
+            var booksDto = {
+                "bookSrl": 0,
+                "isbn": book.isbn13,
+                "title": book.bookName,
+                "author": book.author,
+                "url": book.url,
+                "isInappropriate": "false"
+            };
+
+            $.ajax({
+                url: cartPage.baseUrl + '/api/v1/order/new',
+                method: "POST",
+                dataType:"json",
+                data: { booksDto: JSON.stringify(booksDto), bookType: book.bookType, price: price },
+                success: function (result, status, xhr) {
+                    if (xhr.status == 200) {
+                        if (result != null) {
+                            var rcode = result.rcode;
+                            if(rcode == 'RET0000'){
+                                cartPage.setSnackBar('The order has been requested!', 1000, null, "ok");
+                                cartStorage.removeItems([key],function() {
+                                    cartPage.load();
+                                });
+                                cartPage.closeDialog();
+                            }       
+                            else{
+                                $(location).attr('href', '/html/signin.html');
+                            }
+                        }
+                    }
+                },
+                error: function () {
+
+                }
+            });    
+        }
+        
     },
     focusOrCreateTab : function(url) {
       chrome.windows.getAll({'populate':true}, function(windows) {
@@ -209,6 +242,18 @@ var cartPage = {
         });
         
         $('input#check_all').prop('checked', isAllChecked);
+    },
+    setSnackBar : function(_message, _timeout, _actionHandler, _actionText) {
+        'use strict';
+            var data = {
+                message: _message,
+                timeout: _timeout,
+                actionHandler: _actionHandler,
+                actionText: _actionText
+            };
+            var snackbarContainer = document.querySelector('#snackbar');
+            console.log("Why");
+            snackbarContainer.MaterialSnackbar.showSnackbar(data);
     }
 
 };
