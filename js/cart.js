@@ -1,6 +1,7 @@
 var cartPage = {
     baseUrl : 'http://local.coupang.com:9999',
     cartList:{},
+    limitCredit : 50000,
     init: function() {
         Number.prototype.format = function(){
             if(this==0) return 0;
@@ -139,7 +140,7 @@ var cartPage = {
             $('.dialog_ebook_info').hide();
         } 
 
-        if(checkitout.member.credit < price) {
+        if(checkitout.member.totalAmount > cartPage.limitCredit) {
             $('.dialog_alert_credit').show();
         } else {
             $('.dialog_alert_credit').hide();
@@ -147,9 +148,9 @@ var cartPage = {
 
         $('.dialog_alert_reject').hide();
         
-        dialog.find('#dialog_before_credit').html("before credit : " + checkitout.member.credit.format() + "원");
+        dialog.find('#dialog_before_credit').html("이전 누적금액 : " + checkitout.member.totalAmount.format() + "원");
         dialog.find('#dialog_price').html("price : " + price.format() + "원");
-        dialog.find('#dialog_after_credit').html("after credit : " + (checkitout.member.credit - price).format() + "원");
+        dialog.find('#dialog_after_credit').html("합산 누적금액 : " + (checkitout.member.totalAmount + price).format() + "원");
         dialog.find('button.order').val(book.isbn13 + "|" + book.bookType);
     },
     closeDialog : function() {
