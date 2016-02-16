@@ -306,25 +306,55 @@ checkitout.request_book = {
 		};
 
 		$.ajax({
-			url: checkitout.request_book.baseUrl + '/api/v1/order/new',
+			url: checkitout.request_book.baseUrl + '/api/v1/order/check',
 			method: "POST",
-			dataType:"json",
-			data: { booksDto: JSON.stringify(booksDto), bookType: book.bookType, price: price },
+			data: {bookIsbn: booksDto.isbn},
 			success: function (result, status, xhr) {
-				if (xhr.status == 200) {
-					if (result != null) {
-						var rcode = result.rcode;
-						if(rcode == 'RET0000'){
+				if (result == 'ok') {
+					$.ajax({
+						url: checkitout.request_book.baseUrl + '/api/v1/order/new',
+						method: "POST",
+						dataType: "json",
+						data: {booksDto: JSON.stringify(booksDto), bookType: book.bookType, price: price},
+						success: function (result, status, xhr) {
+							if (xhr.status == 200) {
+								if (result != null) {
+									var rcode = result.rcode;
+									if (rcode == 'RET0000') {
+										message = {
+											message: 'Thanks!',
+											timeout: 2000,
+											actionText: 'done',
+											actionHandler: null,
+										};
+										document.querySelector('#demo-toast-example').MaterialSnackbar.showSnackbar(message);
+
+										setTimeout(function () {
+											$(location).attr('href', '/html/history.html');
+										}, 1000);
+									}
+									else {
+										$(location).attr('href', '/html/signin.html');
+									}
+								}
+							}
+						},
+						error: function () {
 
 						}
-						else{
-							$(location).attr('href', '/html/signin.html');
-						}
-					}
+					});
+				} else if (result == 'duplicate') {
+					message = {
+						message: 'This book is already ordered',
+						timeout: 2000,
+						actionText: 'done',
+						actionHandler: null,
+					};
+					document.querySelector('#demo-toast-example').MaterialSnackbar.showSnackbar(message);
 				}
 			},
 			error: function () {
-
+				console.log('error in /api/v1/order/check');
 			}
 		});
 	}
