@@ -36,11 +36,11 @@ checkitout.check_session = {
 		var teamStr = checkitout.member.teamName;
 		var userStr = checkitout.member.realName;
 		var nickStr = checkitout.member.nickName;
-		var credit = checkitout.member.credit;
+		var totalAmount = checkitout.member.totalAmount;
 		var teamIdStr = '[' + teamStr + '] </br>' + userStr + '(' + nickStr + ')';
 
 		$('#team_id_text').append(teamIdStr);
-		$('#credit_amount').append('[Credit] ' + credit.format() + '원');
+		$('#credit_amount').append('[누적금액]</br>' + totalAmount.format() + '원');
 	}
 }
 

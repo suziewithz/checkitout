@@ -102,16 +102,15 @@ checkitout.request_book = {
 
 		$('#btn_order_book').click(function(){
 			var data, handler;
-			var price = parseInt(that.cookieBook.price);
-			var availableCredit = checkitout.member.credit;
+			var totalAmount = checkitout.member.totalAmount;
 
-			if(price > availableCredit){
+			if(50000 < totalAmount){
 				handler = function(event) {
 					that.dialog.showModal();
 				};
 
 				data = {
-					message: '1. The lack of credit is "' + ((availableCredit - price)*-1).format() + ' won"'
+					message: '1. The totalAmount is "' + (totalAmount).format() + ' won"'
 								+ ' - You must contact admin.'
 								+ ' 2. This book is inaprorpiate book',
 					timeout: 4000,
