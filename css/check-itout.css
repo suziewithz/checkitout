@@ -206,3 +206,8 @@ body {
 .mdl-js-snackbar.mdl-snackbar {
 	width: 100%;
 }
+
+#webpage-link {
+	margin-top:20px;
+	margin-left: 235px;
+}

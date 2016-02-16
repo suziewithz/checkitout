@@ -39,3 +39,8 @@ td.book-title {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+#webpage-link {
+    margin-top:20px;
+    margin-left: 235px;
+}
