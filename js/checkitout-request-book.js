@@ -86,9 +86,12 @@ checkitout.request_book = {
                             if(rcode == 'RET0000'){
                             	if(result.rdata != null) {
                             		bookList = result.rdata.entityList;
-                            		if(bookList !=null && bookList.length != 0) {
+									console.log(bookList);
+                            		if(bookList != null && bookList.length != 0) {
                             			bookDto = bookList[0];
-                            			checkitout.request_book.cookieBook.isInappropriate = bookDto.inappropriate;
+										if(bookDto != null){
+											checkitout.request_book.cookieBook.isInappropriate = bookDto.isinappropriate;
+										}
                             		}
                             	}
                             }
