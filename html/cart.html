@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="../css/material.min.css">
     <link rel="stylesheet" href="../css/default.css">
     <script src="../js/material.min.js"></script>
-
+    <link rel="stylesheet" href="../css/cart.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
         body {
@@ -34,180 +34,7 @@
     <!-- Image card -->
     <style>
 
-        /*.demo-card-square > .mdl-card__title {
-          color: #fff;
-        }
-        .mdl-card__top-menu {
-          position:absolute;
-          top:5px;
-          right:5px;
-        }
-        */
-        .money {
-            float: right;
-            width: 40%;
-            text-align: right;
-            font-size: 13px;
-            color: #888;
-            padding: 5px;
-        }
-
-        .book_type {
-            float: left;
-            width: 45%;
-            text-align: left;
-            font-size: 13px;
-            color: #555;
-            padding: 5px;
-        }
-
-        .demo-card-image.mdl-card {
-            width: 145px;
-            height: 230px;
-        }
-
-        .mdl-card--expand, .mdl-card__actions {
-            cursor: pointer;
-        }
-
-        .demo-card-image > .book-title {
-            height: 80px;
-            padding: 15px;
-            font-size: 14px;
-            background: rgba(0, 0, 0, 0.5);
-
-        }
-
-        .demo-card-image > .book-title > div {
-            color: white;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 3; /* 라인수 */
-            -webkit-box-orient: vertical;
-            word-wrap: break-word; /* aaaaaaaaaaa같은 영문때문에 필요 */
-        }
-
-        .card-custom-area {
-            text-align: right;
-            background-color: white;
-            border-top: 1px solid rgba(0, 0, 0, .1);
-        }
-
-        #button_delete_all {
-            margin-left: 16px;
-            margin-bottom: 16px;
-            color: rgb(244, 67, 54);
-        }
-
-        .button_url {
-            font-size: 18px;
-        }
-
-        .button_delete_item {
-            font-size: 18px;
-        }
-
-        .clearFix {
-            clear: both;
-        }
-
-        #tip {
-            margin-left: 16px;
-            margin-top: 6px;
-        }
-
-        .alert {
-            color: rgb(244, 67, 54);
-            font-size: 12px;
-            margin-bottom: 5px;
-            border: 1px solid;
-            padding: 2px;
-        }
-
-        .icon-red {
-            color: rgb(244, 67, 54);
-        }
-
-        .infor {
-            color: #3E4EB8;
-            font-size: 12px;
-            margin-bottom: 5px;
-            border: 1px solid;
-            padding: 2px;
-        }
-
-        #credit_amount {
-            margin-right: 10px;
-            color: rgb(255, 235, 59);
-        }
-
-        .mdl-dialog {
-            width: 400px;
-        }
-
-        #dialog_order_title {
-            font-weight: bold;
-            color: #222;
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-
-        #dialog_book_title {
-            color: #333;
-            font-size: 16px;
-            margin-bottom: 6px;
-        }
-
-        .infor_wrap {
-            margin-top: 5px;
-            max-height: 130px;
-            overflow-y: scroll;
-            margin-bottom: 6px;
-        }
-
-        .mdl-dialog {
-            overflow-y: scroll;
-        }
-
-        #dialog_price {
-            font-size: 15px;
-            color: #39B449;
-            width: 100%;
-            font-weight: bold;
-            text-align: right;
-            padding: 3px;
-            margin-bottom: 5px;
-        }
-
-        #dialog_before_credit {
-            font-size: 13px;
-            color: #444;
-            width: 100%;
-            text-align: right;
-            padding: 3px;
-        }
-
-        #dialog_after_credit {
-            font-size: 14px;
-            color: #F54D1C;
-            width: 100%;
-            text-align: right;
-            padding: 3px;
-            border-top: 1px solid rgba(0, 0, 0, .1);
-            font-weight: bold;
-        }
-
-        .mdl-dialog__content {
-            padding-bottom: 5px;
-        }
-
-        .order {
-            background: #3E4EB8;
-            color: white;
-        }
-
-
+ 
     </style>
     <!-- Event card -->
 </head>
@@ -218,6 +45,8 @@
             <a id="btn_go_to_request" href="#overview" class="mdl-layout__tab">신청하기</a>
             <a id="btn_go_to_history" href="#history" class="mdl-layout__tab">신청내역</a>
             <a id="btn_go_to_cart" href="#features" class="mdl-layout__tab is-active">찜목록</a>
+            <span id="credit_amount"></span>
+          <span id="team_id_text"></span>
         </div>
     </header>
     <main class="mdl-layout__content">
