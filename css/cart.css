@@ -95,13 +95,13 @@
 
 #credit_amount {
     margin-right: 10px;
-    margin-top: 20px;
-    margin-left: 50px;
+    margin-top: 15px;
+    margin-left: 100px;
     color: rgb(255, 235, 59);
 }
 
 #team_id_text {
-    margin-top:10px;
+    margin-top:15px;
 }
 
 .mdl-dialog {
