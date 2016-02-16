@@ -8,7 +8,7 @@
         <tbody>
         {{#books}}
             <tr>
-                <td class="mdl-data-table__cell--non-numeric">{{book.title}}</td>
+                <td class="mdl-data-table__cell--non-numeric book-title" title="{{book.title}}">{{book.title}}</td>
                 <td>{{price}}원</td>
                 <td>
                     <div id="order-{{srl}}" data-order="{{srl}}"
