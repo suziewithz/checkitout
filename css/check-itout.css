@@ -225,6 +225,13 @@ body {
     margin-left:135px;
 }
 
+#empty-space {
+	width:80px;
+	height:60px;
+	margin-top:12px;
+	margin-left:135px;
+}
+
 #author {
 	overflow: hidden;
 	padding-top: 4px;
