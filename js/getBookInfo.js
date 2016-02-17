@@ -241,6 +241,9 @@ var bookInfo = {
 
 		getBookName: function() {
 			var title = $('#productTitle').text();
+			if(title == null || title == ''){
+				title = $('#ebooksProductTitle').text();
+			}
 			return title;
 		},
 
@@ -313,6 +316,9 @@ var bookInfo = {
 
 		getAuthor: function() {
 			var author = $('.author.notFaded > span > a:eq(0)').text();
+			if(author == null || author == ''){
+				author = $('.author.notFaded > a').text();
+			}
 			return author;
 		},
 

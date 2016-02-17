@@ -324,6 +324,10 @@ checkitout.request_book = {
 								if (result != null) {
 									var rcode = result.rcode;
 									if (rcode == 'RET0000') {
+
+										checkitout.member = result.rdata.entityList[0];
+										console.log(checkitout.member);
+
 										message = {
 											message: 'Thanks!',
 											timeout: 2000,
