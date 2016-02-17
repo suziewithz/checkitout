@@ -241,3 +241,11 @@ body {
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
 }
+
+.dialog_alert_reject {
+	color: rgb(244, 67, 54);
+    font-size: 12px;
+    margin-bottom: 5px;
+    border: 1px solid;
+    padding: 2px;
+}

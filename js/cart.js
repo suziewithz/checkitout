@@ -159,10 +159,10 @@ var cartPage = {
         dialog.find('#dialog_before_credit').html("이전 누적금액 : " + checkitout.member.totalAmount.format() + "원");
         
         if(book.url.indexOf('amazon.com')!=-1) {
-            dialog.find('#dialog_price').html("price : " + price.format() + "$ (1$ : 1200원)");    
+            dialog.find('#dialog_price').html('<span class="left">+</span>price : ' + price.format() + "$ (1$ : 1200원)");    
             dialog.find('#dialog_after_credit').html("합산 누적금액 : " + (checkitout.member.totalAmount + price * 1200).format() + "원");
         } else {
-            dialog.find('#dialog_price').html("price : " + price.format() + "원");
+            dialog.find('#dialog_price').html('<span class="left">+</span>price : ' + price.format() + '원');
             dialog.find('#dialog_after_credit').html("합산 누적금액 : " + (checkitout.member.totalAmount + price).format() + "원");
         }
 

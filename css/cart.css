@@ -169,4 +169,11 @@
     color: white;
 }
 
+.left {
+    position :absolute;
+    left : 40px;
+    font-size:15px;
+    color:#555;
+}
+
 

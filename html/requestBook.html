@@ -22,12 +22,12 @@
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
         <div class="mdl-layout__tab-bar mdl-js-ripple-effect mdl-color--primary-dark">
-            <a id="btn_go_to_request" href="#overview" class="mdl-layout__tab is-active">신청하기</a>
-            <a id="btn_go_to_history" href="#history" class="mdl-layout__tab">신청내역</a>
-            <a id="btn_go_to_cart" href="#features" class="mdl-layout__tab">찜목록</a>
+            <a tabindex="-1" id="btn_go_to_request" href="#overview" class="mdl-layout__tab is-active">신청하기</a>
+            <a tabindex="-1" id="btn_go_to_history" href="#history" class="mdl-layout__tab">신청내역</a>
+            <a tabindex="-1" id="btn_go_to_cart" href="#features" class="mdl-layout__tab">찜목록</a>
             <span id="credit_amount"></span>
             <span id="webpage-link">
-                <a href="http://local.coupang.com:9999/" target="_blank">
+                <a tabindex="-1" href="http://local.coupang.com:9999/" target="_blank">
                     <i style="color:white" class="material-icons">open_in_new</i>
                 </a>
             </span>
@@ -39,7 +39,7 @@
         <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" style="padding-top: 5px">
             <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored">
                 <i class="material-icons">information</i>
-            </button>신청 버튼을 클릭하면 구매 신청을 할 수 있습니다. :)
+            </button> > 버튼을 클릭하면 구매 신청을 할 수 있습니다. :)
         </a>
 
         <div class="parent-box mdl-grid is-active" id="overview">

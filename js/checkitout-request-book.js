@@ -88,7 +88,8 @@ checkitout.request_book = {
 
 			if(checkitout.request_book.cookieBook.isInappropriate){
 				$dialogContents.empty();
-				$dialogContents.append("이책은 반려당한적이 있습니다.");
+				$dialogContents.append('<div class="dialog_alert_reject"><button class="mdl-button mdl-js-button mdl-button--icon icon-red"><i class="material-icons">information</i></button>이 책은 반려된 적이 있습니다.</div>');
+				
 			}
 			else{
 				$dialogContents.empty();
@@ -370,6 +371,8 @@ $(document).ready(function() {
 			document.body.innerText = 'There was an error injecting script : \n' + chrome.extension.lastError.message;
 		}
 	});
+
+	function setFocusOnLoad() {}
 
 });
 
