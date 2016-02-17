@@ -37,7 +37,7 @@ define(["text!/html/template/history-list.hbs",
 
             order['srl'] = entity.orderSrl;
             order['book'] = entity.book;
-            order['price'] = entity.price;
+            order['price'] = entity.price.format();
             order['regDate'] = entity.regDttm;
             order['updateDate'] = entity.updDttm;
 
