@@ -48,8 +48,10 @@ define(["text!/html/template/history-list.hbs",
                     break;
                 case 2:
                 case 3:
-                case 4:
                     entity.status['icon'] = 'local_shipping';
+                    break;
+                case 4:
+                    entity.status['icon'] = 'directions_run';
                     break;
                 case 5:
                     entity.status['icon'] = 'done';
