@@ -2,6 +2,7 @@ var cartPage = {
     baseUrl : 'http://local.coupang.com:9999',
     cartList:{},
     limitCredit : 50000,
+    currency: 1100,
     init: function() {
         Number.prototype.format = function(){
             if(this==0) return 0;
@@ -159,8 +160,8 @@ var cartPage = {
         dialog.find('#dialog_before_credit').html("이전 누적금액 : " + checkitout.member.totalAmount.format() + "원");
         
         if(book.url.indexOf('amazon.com')!=-1) {
-            dialog.find('#dialog_price').html('<span class="left">+</span>price : ' + price.format() + "$ (1$ : 1200원)");    
-            dialog.find('#dialog_after_credit').html("합산 누적금액 : " + (checkitout.member.totalAmount + price * 1200).format() + "원");
+            dialog.find('#dialog_price').html('<span class="left">+</span>price : ' + price.format() + "$ (1$ : 1,100원)");    
+            dialog.find('#dialog_after_credit').html("합산 누적금액 : " + (checkitout.member.totalAmount + price * cartPage.currency).format() + "원");
         } else {
             dialog.find('#dialog_price').html('<span class="left">+</span>price : ' + price.format() + '원');
             dialog.find('#dialog_after_credit').html("합산 누적금액 : " + (checkitout.member.totalAmount + price).format() + "원");
@@ -197,34 +198,48 @@ var cartPage = {
                 "url": book.url,
                 "isInappropriate": "false"
             };
-
             $.ajax({
-                url: cartPage.baseUrl + '/api/v1/order/new',
+                url: carPage.baseUrl + '/api/v1/order/check',
                 method: "POST",
-                dataType:"json",
-                data: { booksDto: JSON.stringify(booksDto), bookType: book.bookType, price: price },
+                data: {bookIsbn: book.isbn},
                 success: function (result, status, xhr) {
-                    if (xhr.status == 200) {
-                        if (result != null) {
-                            var rcode = result.rcode;
-                            if(rcode == 'RET0000'){
-                                checkitout.member = result.rdata.entityList[0];
-                                cartPage.setSnackBar('The order has been requested!', 1000, null, "ok");
-                                cartStorage.removeItems([key],function() {
-                                    cartPage.load();
-                                });
-                                cartPage.closeDialog();
-                            }       
-                            else{
-                                $(location).attr('href', '/html/signin.html');
+                    if (result == 'ok') {
+                        $.ajax({
+                            url: cartPage.baseUrl + '/api/v1/order/new',
+                            method: "POST",
+                            dataType:"json",
+                            data: { booksDto: JSON.stringify(booksDto), bookType: book.bookType, price: price },
+                            success: function (result, status, xhr) {
+                                if (xhr.status == 200) {
+                                    if (result != null) {
+                                        var rcode = result.rcode;
+                                        if(rcode == 'RET0000'){
+                                            checkitout.member = result.rdata.entityList[0];
+                                            cartPage.setSnackBar('감사합니다!!', 2000, null, "ok");
+                                            cartStorage.removeItems([key],function() {
+                                                cartPage.load();
+                                            });
+                                            cartPage.closeDialog();
+                                        }
+                                               
+                                        else{
+                                            $(location).attr('href', '/html/signin.html');
+                                        }
+                                    }
+                                }
+                            },
+                            error: function () {
+                                console.log('order error');
                             }
-                        }
+                        });    
+                    } else if (result == 'duplicate') {
+                        setSnackBar('이미 구매한 적이 있는 책입니다.', 2000, 'done',null);
                     }
                 },
-                error: function () {
-
+                error: function() {
+                    console.log('check error');
                 }
-            });    
+            });
         }
         
     },

@@ -63,7 +63,7 @@ checkitout.request_book = {
 			cartStorage.addItem(checkitout.request_book.cookieBook, function(data) {
 				if($.isEmptyObject(data)) {
 					message = {
-						message: checkitout.request_book.cookieBook.bookName +' is added to cart',
+						message: checkitout.request_book.cookieBook.bookName +'을(를) 찜 하였습니다!',
 						timeout: 800,
 						actionText: 'done',
 						actionHandler: null,
@@ -71,7 +71,7 @@ checkitout.request_book = {
 					snackbarContainer.MaterialSnackbar.showSnackbar(message);
 				} else {
 					message = {
-						message: checkitout.request_book.cookieBook.bookName +' is already added',
+						message: checkitout.request_book.cookieBook.bookName +'을(를) 이미 찜 하였습니다!',
 						timeout: 800,
 						actionText: 'done',
 						actionHandler: null,
@@ -86,14 +86,7 @@ checkitout.request_book = {
 			var totalAmount = checkitout.member.totalAmount;
 			var $dialogContents = $('#dialog-contents');
 
-			if(checkitout.request_book.cookieBook.isInappropriate){
-				$dialogContents.empty();
-				$dialogContents.append('<div class="dialog_alert_reject"><button class="mdl-button mdl-js-button mdl-button--icon icon-red"><i class="material-icons">information</i></button>이 책은 반려된 적이 있습니다.</div>');
-				
-			}
-			else{
-				$dialogContents.empty();
-			}
+			checkitout.request_book.setDialogContent(checkitout.request_book.cookieBook);
 
 			if(50000 < totalAmount){
 				handler = function(event) {
@@ -101,9 +94,8 @@ checkitout.request_book = {
 				};
 
 				data = {
-					message: '1. 누적금액이 "' + (totalAmount).format() + ' 원 입니다."'
-								+ ' - 관리자에게 연락주세요.'
-								+ ' 2. This book is inaprorpiate book',
+					message: '누적금액이 "' + (totalAmount).format() + ' 원 입니다."'
+								+ ' - 관리자에게 연락주세요.',
 					timeout: 4000,
 					actionText: 'Force Order',
 					actionHandler: handler
@@ -149,7 +141,46 @@ checkitout.request_book = {
 			}
 		});
 	},
+	setDialogContent : function(book) {
+        var dialog = $('dialog');
+        var title = '<button class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">shopping_basket</i></button>';
+        dialog.find('div#dialog_order_title').html(title + "Order [" + book.bookType + "]");
+        var title = dialog.find('div#dialog_book_title').html(book.bookName);
+        var price = 0;
+        if(book.bookType == 'ebook') {
+            price = book.ebookPrice;
+            $('.dialog_ebook_info').show();
+        }
+        else {
+            price = book.price;
+            $('.dialog_ebook_info').hide();
+        } 
 
+        if(checkitout.member.totalAmount + price > 50000) {
+            $('.dialog_alert_credit').show();
+        } else {
+            $('.dialog_alert_credit').hide();
+        }
+
+        if(book.isInappropriate) {
+            $('.dialog_alert_reject').show();
+        } else {
+            $('.dialog_alert_reject').hide();
+        }
+        
+        dialog.find('#dialog_before_credit').html("이전 누적금액 : " + checkitout.member.totalAmount.format() + "원");
+        
+        if(book.url.indexOf('amazon.com')!=-1) {
+            dialog.find('#dialog_price').html('<span class="left">+</span>price : ' + price.format() + "$ (1$ : 1,100원)");    
+            dialog.find('#dialog_after_credit').html("합산 누적금액 : " + (checkitout.member.totalAmount + price * 1100).format() + "원");
+        } else {
+            dialog.find('#dialog_price').html('<span class="left">+</span>price : ' + price.format() + '원');
+            dialog.find('#dialog_after_credit').html("합산 누적금액 : " + (checkitout.member.totalAmount + price).format() + "원");
+        }
+
+        dialog.find('button.order').val(book.isbn13 + "|" + book.bookType);
+
+    },
 	getBookInfo: function () {
 		$.ajax({
 			url: checkitout.request_book.baseUrl + '/api/v1/book/' + checkitout.request_book.cookieBook.isbn13 ,
@@ -323,7 +354,7 @@ checkitout.request_book = {
 										console.log(checkitout.member);
 
 										message = {
-											message: 'Thanks!',
+											message: '감사합니다!',
 											timeout: 2000,
 											actionText: 'done',
 											actionHandler: null,
@@ -346,7 +377,7 @@ checkitout.request_book = {
 					});
 				} else if (result == 'duplicate') {
 					message = {
-						message: 'This book is already ordered',
+						message: '이미 구매한 적이 있는 책입니다.',
 						timeout: 2000,
 						actionText: 'done',
 						actionHandler: null,
