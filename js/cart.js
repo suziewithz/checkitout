@@ -45,7 +45,11 @@ var cartPage = {
         card += '</div></div>';
         card += '<div class="card-custom-area">';
         card += '<div class="book_type">' + book.bookType + '</div>'
-        card += '<div class="money">'+book.price.format()+'원</div>';
+        if(book.url.indexOf('amazon.com')!=-1) {
+            card += '<div class="money">'+book.price.format()+'$</div>';
+        } else {
+            card += '<div class="money">'+book.price.format()+'원</div>';
+        }
         card += '<div class="clearFix"></div>';
         card += '</div><div class="card-custom-area">';
         card += '<button alt="링크로 이동" value="' + book.url + '" class="button_url mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">link</i></button>';
@@ -153,9 +157,17 @@ var cartPage = {
         }
         
         dialog.find('#dialog_before_credit').html("이전 누적금액 : " + checkitout.member.totalAmount.format() + "원");
-        dialog.find('#dialog_price').html("price : " + price.format() + "원");
-        dialog.find('#dialog_after_credit').html("합산 누적금액 : " + (checkitout.member.totalAmount + price).format() + "원");
+        
+        if(book.url.indexOf('amazon.com')!=-1) {
+            dialog.find('#dialog_price').html("price : " + price.format() + "$ (1$ : 1200원)");    
+            dialog.find('#dialog_after_credit').html("합산 누적금액 : " + (checkitout.member.totalAmount + price * 1200).format() + "원");
+        } else {
+            dialog.find('#dialog_price').html("price : " + price.format() + "원");
+            dialog.find('#dialog_after_credit').html("합산 누적금액 : " + (checkitout.member.totalAmount + price).format() + "원");
+        }
+
         dialog.find('button.order').val(book.isbn13 + "|" + book.bookType);
+
     },
     closeDialog : function() {
         var dialog = document.querySelector('dialog');
@@ -235,14 +247,6 @@ var cartPage = {
           chrome.tabs.create({'url':url, 'selected':true});
         }
       });
-    },
-    setCheckAll : function() {
-        var isAllChecked = true;
-        $('input.check_row').each(function() {
-            isAllChecked = isAllChecked && $(this).is(':checked');
-        });
-        
-        $('input#check_all').prop('checked', isAllChecked);
     },
     setSnackBar : function(_message, _timeout, _actionHandler, _actionText) {
         'use strict';
