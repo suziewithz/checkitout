@@ -2,10 +2,12 @@
  * Created by kyuta on 2016. 2. 12..
  */
 
-require(['template', 'message', 'jquery',
-    '/js/util/constants.js'], function (templateManager, messageManager) {
+require(['template', 'message', 'underscore.string', 'jquery',
+    '/js/util/constants.js'], function (templateManager, messageManager, _) {
 
     var loadingScreen = $("#spinner");
+
+    var memberData;
 
     var loginCheck = function () {
         $.ajax({
@@ -16,6 +18,17 @@ require(['template', 'message', 'jquery',
                     if (result != null) {
                         if (!result.rcode == 'RET0000') {
                             $(location).attr('href', '/html/signin.html');
+                        } else {
+                            memberData = result.rdata.entityList[0];
+
+                            var teamStr = memberData.teamName;
+                            var userStr = memberData.realName;
+                            var nickStr = memberData.nickName;
+                            var totalAmount = memberData.totalAmount;
+                            var teamIdStr = '[' + teamStr + '] </br>' + userStr + '(' + nickStr + ')';
+
+                            $('#team_id_text').append(teamIdStr);
+                            $('#credit_amount').append('[누적금액]</br>' + _.numberFormat(totalAmount) + '원');
                         }
                     }
                 }
@@ -92,6 +105,9 @@ requirejs.config({
         'underscore': [
             '/js/lib/underscore.min'
         ],
+        'underscore.string': [
+            '/js/lib/underscore.string.min'
+        ],
         'moment': [
             '/js/lib/moment.min'
         ]
@@ -101,6 +117,9 @@ requirejs.config({
             exports: function () {
                 return _;
             }
+        },
+        'underscore.string': {
+            deps: ['underscore']
         }
     }
 });
