@@ -27,7 +27,7 @@ checkitout.check_session = {
 				}
 			},
 			error: function () {
-
+				$(location).attr('href', '/html/signin.html');
 			}
 		});
 	},

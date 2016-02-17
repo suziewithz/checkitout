@@ -95,7 +95,13 @@
 
 #webpage-link {
     margin-top:20px;
-    margin-left: 235px;
+    margin-left:20px;
+}
+
+#credit_amount {
+    width:80px;
+    margin-top:12px;
+    margin-left:135px;
 }
 
 .mdl-dialog {

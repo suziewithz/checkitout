@@ -90,7 +90,7 @@ var bookInfo = {
 			});
 			price = price.replace(/,/g,"");
 			price = price.replace(/원/g, "");
-			return price;
+			return parseFloat(price);
 		},
 
 		getEbookPrice: function() {
@@ -102,7 +102,7 @@ var bookInfo = {
 			});
 			price = price.replace(/,/g,"");
 			price = price.replace(/원/g, "");
-			return price;
+			return parseFloat(price);
 		},
 
 		getISBN13: function(document) {
@@ -170,7 +170,7 @@ var bookInfo = {
 			
 			price = price.replace(/,/g,"");
         	price = price.replace(/원/g, "");
-        	return price == "" ? 0 :parseInt(price);
+        	return price == "" ? 0 :parseFloat(price);
         },
         
 		getEbookPrice: function() {
@@ -194,7 +194,7 @@ var bookInfo = {
 			
 			price = price.replace(/,/g,"");
         	price = price.replace(/원/g, "");
-			return price == "" ? 0 : parseInt(price);
+			return price == "" ? 0 : parseFloat(price);
 		},
 
 		getISBN13: function(document) {
@@ -241,6 +241,9 @@ var bookInfo = {
 
 		getBookName: function() {
 			var title = $('#productTitle').text();
+			if(title == null || title == ''){
+				title = $('#ebooksProductTitle').text();
+			}
 			return title;
 		},
 
@@ -260,7 +263,7 @@ var bookInfo = {
 			price = price.replace(/from /g,"");
 			price = price.replace(/,/g,"");
 			price = price.replace(/\$/g, "");
-			return price == "" ? 0 :parseInt(price);
+			return price == "" ? 0 :parseFloat(price);
 		},
 
 		getEbookPrice: function() {
@@ -279,7 +282,7 @@ var bookInfo = {
 			price = price.toString();
 			price = price.replace(/,/g,"");
 			price = price.replace(/\$/g, "");
-			return price == "" ? 0 :parseInt(price);
+			return price == "" ? 0 :parseFloat(price);
 		},
 
 		getISBN13: function() {
@@ -313,6 +316,9 @@ var bookInfo = {
 
 		getAuthor: function() {
 			var author = $('.author.notFaded > span > a:eq(0)').text();
+			if(author == null || author == ''){
+				author = $('.author.notFaded > a').text();
+			}
 			return author;
 		},
 
