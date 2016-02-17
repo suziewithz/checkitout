@@ -263,7 +263,7 @@ var bookInfo = {
 			price = price.replace(/from /g,"");
 			price = price.replace(/,/g,"");
 			price = price.replace(/\$/g, "");
-			return price == "" ? 0 :parseInt(price);
+			return price == "" ? 0 :parseFloat(price);
 		},
 
 		getEbookPrice: function() {
@@ -282,7 +282,7 @@ var bookInfo = {
 			price = price.toString();
 			price = price.replace(/,/g,"");
 			price = price.replace(/\$/g, "");
-			return price == "" ? 0 :parseInt(price);
+			return price == "" ? 0 :parseFloat(price);
 		},
 
 		getISBN13: function() {
