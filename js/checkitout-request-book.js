@@ -38,12 +38,14 @@ checkitout.request_book = {
 			if($parentBox.hasClass('moved')){
 				$parentBox.removeClass('moved')
 				$parentBox.animate({ "left": "+=170px" }, "fast" );
-				$btnRequestBookIcon.text('keyboard_arrow_right')
+				$btnRequestBookIcon.text('keyboard_arrow_right');
 			}
 			else{
 				$parentBox.addClass('moved')
 				$parentBox.animate({ "left": "-=170px" }, "fast" );
-				$btnRequestBookIcon.text('keyboard_arrow_left')
+				$btnRequestBookIcon.text('keyboard_arrow_left');
+
+				that.getBookInfo();
 			}
 		});
 
@@ -56,62 +58,41 @@ checkitout.request_book = {
 		});
 
 		$('#btn_cart_book').click(function(){
-			$.ajax({
-                url: checkitout.request_book.baseUrl + '/api/v1/book/' + checkitout.request_book.cookieBook.isbn13 ,
-                method: "GET",
-                dataType:"json",
-                // data: { booksDto: JSON.stringify(booksDto), bookType: book.bookType, price: price },
-                success: function (result, status, xhr) {
-                    if (xhr.status == 200) {
-                    	var isInappropriate = false;
-                        if (result != null) {
-                            var rcode = result.rcode;
-                            if(rcode == 'RET0000'){
-                            	if(result.rdata != null) {
-                            		bookList = result.rdata.entityList;
-									console.log(bookList);
-                            		if(bookList != null && bookList.length != 0) {
-                            			bookDto = bookList[0];
-										if(bookDto != null){
-											isInappropriate =  bookDto.inappropriate;
-										}
-                            		}
-                            	}
-                            }
-                        }
-						checkitout.request_book.cookieBook.isInappropriate = bookDto.inappropriate;
-                        var date = new Date();
-				        checkitout.request_book.cookieBook.createdDate = date.getFullYear() + '년 ' + date.getMonth() + "월 " + date.getDate() + "일 " + date.getHours() + "시 " + date.getMinutes() + "분";
-				        cartStorage.addItem(checkitout.request_book.cookieBook, function(data) {
-				            if($.isEmptyObject(data)) {
-								message = {
-									message: checkitout.request_book.cookieBook.bookName +' is added to cart',
-									timeout: 800,
-									actionText: 'done',
-									actionHandler: null,
-								};
-								snackbarContainer.MaterialSnackbar.showSnackbar(message);
-				            } else {
-								message = {
-									message: checkitout.request_book.cookieBook.bookName +' is already added',
-									timeout: 800,
-									actionText: 'done',
-									actionHandler: null,
-								};
-								snackbarContainer.MaterialSnackbar.showSnackbar(message);
-				            }
-				        });
-                    }
-                },
-                error: function () {
-
-                }
-            });    
+			var date = new Date();
+			checkitout.request_book.cookieBook.createdDate = date.getFullYear() + '년 ' + date.getMonth() + "월 " + date.getDate() + "일 " + date.getHours() + "시 " + date.getMinutes() + "분";
+			cartStorage.addItem(checkitout.request_book.cookieBook, function(data) {
+				if($.isEmptyObject(data)) {
+					message = {
+						message: checkitout.request_book.cookieBook.bookName +' is added to cart',
+						timeout: 800,
+						actionText: 'done',
+						actionHandler: null,
+					};
+					snackbarContainer.MaterialSnackbar.showSnackbar(message);
+				} else {
+					message = {
+						message: checkitout.request_book.cookieBook.bookName +' is already added',
+						timeout: 800,
+						actionText: 'done',
+						actionHandler: null,
+					};
+					snackbarContainer.MaterialSnackbar.showSnackbar(message);
+				}
+			});
 		});
 
 		$('#btn_order_book').click(function(){
 			var data, handler;
 			var totalAmount = checkitout.member.totalAmount;
+			var $dialogContents = $('#dialog-contents');
+
+			if(checkitout.request_book.cookieBook.isInappropriate){
+				$dialogContents.empty();
+				$dialogContents.append("이책은 반려당한적이 있습니다.");
+			}
+			else{
+				$dialogContents.empty();
+			}
 
 			if(50000 < totalAmount){
 				handler = function(event) {
@@ -119,8 +100,8 @@ checkitout.request_book = {
 				};
 
 				data = {
-					message: '1. The totalAmount is "' + (totalAmount).format() + ' won"'
-								+ ' - You must contact admin.'
+					message: '1. 누적금액이 "' + (totalAmount).format() + ' 원 입니다."'
+								+ ' - 관리자에게 연락주세요.'
 								+ ' 2. This book is inaprorpiate book',
 					timeout: 4000,
 					actionText: 'Force Order',
@@ -164,6 +145,35 @@ checkitout.request_book = {
 			}
 			else{
 				$price.text(price.format() + "원");
+			}
+		});
+	},
+
+	getBookInfo: function () {
+		$.ajax({
+			url: checkitout.request_book.baseUrl + '/api/v1/book/' + checkitout.request_book.cookieBook.isbn13 ,
+			method: "GET",
+			dataType:"json",
+			success: function (result, status, xhr) {
+				if (xhr.status == 200) {
+					if (result != null) {
+						var rcode = result.rcode;
+						if(rcode == 'RET0000'){
+							if(result.rdata != null) {
+								bookList = result.rdata.entityList;
+								if(bookList != null && bookList.length != 0) {
+									bookDto = bookList[0];
+									if(bookDto != null){
+										checkitout.request_book.cookieBook.isInappropriate = bookDto.inappropriate;
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			error: function () {
+
 			}
 		});
 	},
