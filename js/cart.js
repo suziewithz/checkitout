@@ -131,7 +131,7 @@ var cartPage = {
     },
     setDialogContent : function(book) {
         var dialog = $('dialog');
-        var title = '<button class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">shopping basket</i></button>';
+        var title = '<button class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">shopping_basket</i></button>';
         dialog.find('div#dialog_order_title').html(title + "Order [" + book.bookType + "]");
         var title = dialog.find('div#dialog_book_title').html(book.bookName);
         var price = 0;
