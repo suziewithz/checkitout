@@ -196,6 +196,7 @@ var cartPage = {
                         if (result != null) {
                             var rcode = result.rcode;
                             if(rcode == 'RET0000'){
+                                checkitout.member = result.rdata.entityList[0];
                                 cartPage.setSnackBar('The order has been requested!', 1000, null, "ok");
                                 cartStorage.removeItems([key],function() {
                                     cartPage.load();
