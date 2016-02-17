@@ -90,7 +90,7 @@ var bookInfo = {
 			});
 			price = price.replace(/,/g,"");
 			price = price.replace(/원/g, "");
-			return price;
+			return parseFloat(price);
 		},
 
 		getEbookPrice: function() {
@@ -102,7 +102,7 @@ var bookInfo = {
 			});
 			price = price.replace(/,/g,"");
 			price = price.replace(/원/g, "");
-			return price;
+			return parseFloat(price);
 		},
 
 		getISBN13: function(document) {
@@ -170,7 +170,7 @@ var bookInfo = {
 			
 			price = price.replace(/,/g,"");
         	price = price.replace(/원/g, "");
-        	return price == "" ? 0 :parseInt(price);
+        	return price == "" ? 0 :parseFloat(price);
         },
         
 		getEbookPrice: function() {
@@ -194,7 +194,7 @@ var bookInfo = {
 			
 			price = price.replace(/,/g,"");
         	price = price.replace(/원/g, "");
-			return price == "" ? 0 : parseInt(price);
+			return price == "" ? 0 : parseFloat(price);
 		},
 
 		getISBN13: function(document) {
