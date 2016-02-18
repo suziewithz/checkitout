@@ -9,24 +9,6 @@ checkitout.request_book = {
 	init: function(){
 		var that = checkitout.request_book;
 
-		Number.prototype.format = function(){
-			if(this==0) return 0;
-
-			var reg = /(^[+-]?\d+)(\d{3})/;
-			var n = (this + '');
-
-			while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
-
-			return n;
-		};
-
-		String.prototype.format = function(){
-			var num = parseFloat(this);
-			if( isNaN(num) ) return "0";
-
-			return num.format();
-		};
-
 		that.dialog = document.querySelector('dialog');
 		if (!that.dialog.showModal) {
 			dialogPolyfill.registerDialog(dialog);
@@ -56,12 +38,14 @@ checkitout.request_book = {
 			if($parentBox.hasClass('moved')){
 				$parentBox.removeClass('moved')
 				$parentBox.animate({ "left": "+=170px" }, "fast" );
-				$btnRequestBookIcon.text('keyboard_arrow_right')
+				$btnRequestBookIcon.text('keyboard_arrow_right');
 			}
 			else{
 				$parentBox.addClass('moved')
 				$parentBox.animate({ "left": "-=170px" }, "fast" );
-				$btnRequestBookIcon.text('keyboard_arrow_left')
+				$btnRequestBookIcon.text('keyboard_arrow_left');
+
+				that.getBookInfo();
 			}
 		});
 
@@ -74,61 +58,35 @@ checkitout.request_book = {
 		});
 
 		$('#btn_cart_book').click(function(){
-			$.ajax({
-                url: checkitout.request_book.baseUrl + '/api/v1/book/' + checkitout.request_book.cookieBook.isbn13 ,
-                method: "GET",
-                dataType:"json",
-                // data: { booksDto: JSON.stringify(booksDto), bookType: book.bookType, price: price },
-                success: function (result, status, xhr) {
-                    if (xhr.status == 200) {
-                        if (result != null) {
-                            var rcode = result.rcode;
-                            if(rcode == 'RET0000'){
-                            	if(result.rdata != null) {
-                            		bookList = result.rdata.entityList;
-									console.log(bookList);
-                            		if(bookList != null && bookList.length != 0) {
-                            			bookDto = bookList[0];
-										if(bookDto != null){
-											checkitout.request_book.cookieBook.isInappropriate = bookDto.isinappropriate;
-										}
-                            		}
-                            	}
-                            }
-                        }
-
-                        var date = new Date();
-				        checkitout.request_book.cookieBook.createdDate = date.getFullYear() + '년 ' + date.getMonth() + "월 " + date.getDate() + "일 " + date.getHours() + "시 " + date.getMinutes() + "분";
-				        cartStorage.addItem(checkitout.request_book.cookieBook, function(data) {
-				            if($.isEmptyObject(data)) {
-								message = {
-									message: checkitout.request_book.cookieBook.bookName +' is added to cart',
-									timeout: 800,
-									actionText: 'done',
-									actionHandler: null,
-								};
-								snackbarContainer.MaterialSnackbar.showSnackbar(message);
-				            } else {
-								message = {
-									message: checkitout.request_book.cookieBook.bookName +' is already added',
-									timeout: 800,
-									actionText: 'done',
-									actionHandler: null,
-								};
-								snackbarContainer.MaterialSnackbar.showSnackbar(message);
-				            }
-				        });
-                    }
-                },
-                error: function () {
-
-                }
-            });    
+			var date = new Date();
+			checkitout.request_book.cookieBook.createdDate = date.getFullYear() + '년 ' + date.getMonth() + "월 " + date.getDate() + "일 " + date.getHours() + "시 " + date.getMinutes() + "분";
+			cartStorage.addItem(checkitout.request_book.cookieBook, function(data) {
+				if($.isEmptyObject(data)) {
+					message = {
+						message: checkitout.request_book.cookieBook.bookName +'을(를) 찜 하였습니다!',
+						timeout: 800,
+						actionText: 'done',
+						actionHandler: null,
+					};
+					snackbarContainer.MaterialSnackbar.showSnackbar(message);
+				} else {
+					message = {
+						message: checkitout.request_book.cookieBook.bookName +'을(를) 이미 찜 하였습니다!',
+						timeout: 800,
+						actionText: 'done',
+						actionHandler: null,
+					};
+					snackbarContainer.MaterialSnackbar.showSnackbar(message);
+				}
+			});
 		});
 
 		$('#btn_order_book').click(function(){
 			var data, handler;
 			var totalAmount = checkitout.member.totalAmount;
+			var $dialogContents = $('#dialog-contents');
+
+			checkitout.request_book.setDialogContent(checkitout.request_book.cookieBook);
 
 			if(50000 < totalAmount){
 				handler = function(event) {
@@ -136,9 +94,8 @@ checkitout.request_book = {
 				};
 
 				data = {
-					message: '1. The totalAmount is "' + (totalAmount).format() + ' won"'
-								+ ' - You must contact admin.'
-								+ ' 2. This book is inaprorpiate book',
+					message: '누적금액이 "' + (totalAmount).format() + ' 원 입니다."'
+								+ ' - 관리자에게 연락주세요.',
 					timeout: 4000,
 					actionText: 'Force Order',
 					actionHandler: handler
@@ -181,6 +138,74 @@ checkitout.request_book = {
 			}
 			else{
 				$price.text(price.format() + "원");
+			}
+		});
+	},
+	setDialogContent : function(book) {
+        var dialog = $('dialog');
+        var title = '<button class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">shopping_basket</i></button>';
+        dialog.find('div#dialog_order_title').html(title + "Order [" + book.bookType + "]");
+        var title = dialog.find('div#dialog_book_title').html(book.bookName);
+        var price = 0;
+        if(book.bookType == 'ebook') {
+            price = book.ebookPrice;
+            $('.dialog_ebook_info').show();
+        }
+        else {
+            price = book.price;
+            $('.dialog_ebook_info').hide();
+        } 
+
+        if(checkitout.member.totalAmount + price > 50000) {
+            $('.dialog_alert_credit').show();
+        } else {
+            $('.dialog_alert_credit').hide();
+        }
+
+        if(book.isInappropriate) {
+            $('.dialog_alert_reject').show();
+        } else {
+            $('.dialog_alert_reject').hide();
+        }
+        
+        dialog.find('#dialog_before_credit').html("이전 누적금액 : " + checkitout.member.totalAmount.format() + "원");
+        
+        if(book.url.indexOf('amazon.com')!=-1) {
+            dialog.find('#dialog_price').html('<span class="left">+</span>price : ' + price.format() + "$ (1$ : 1,100원)");    
+            dialog.find('#dialog_after_credit').html("합산 누적금액 : " + (checkitout.member.totalAmount + price * 1100).format() + "원");
+        } else {
+            dialog.find('#dialog_price').html('<span class="left">+</span>price : ' + price.format() + '원');
+            dialog.find('#dialog_after_credit').html("합산 누적금액 : " + (checkitout.member.totalAmount + price).format() + "원");
+        }
+
+        dialog.find('button.order').val(book.isbn13 + "|" + book.bookType);
+
+    },
+	getBookInfo: function () {
+		$.ajax({
+			url: checkitout.request_book.baseUrl + '/api/v1/book/' + checkitout.request_book.cookieBook.isbn13 ,
+			method: "GET",
+			dataType:"json",
+			success: function (result, status, xhr) {
+				if (xhr.status == 200) {
+					if (result != null) {
+						var rcode = result.rcode;
+						if(rcode == 'RET0000'){
+							if(result.rdata != null) {
+								bookList = result.rdata.entityList;
+								if(bookList != null && bookList.length != 0) {
+									bookDto = bookList[0];
+									if(bookDto != null){
+										checkitout.request_book.cookieBook.isInappropriate = bookDto.inappropriate;
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			error: function () {
+
 			}
 		});
 	},
@@ -329,7 +354,7 @@ checkitout.request_book = {
 										console.log(checkitout.member);
 
 										message = {
-											message: 'Thanks!',
+											message: '감사합니다!',
 											timeout: 2000,
 											actionText: 'done',
 											actionHandler: null,
@@ -352,7 +377,7 @@ checkitout.request_book = {
 					});
 				} else if (result == 'duplicate') {
 					message = {
-						message: 'This book is already ordered',
+						message: '이미 구매한 적이 있는 책입니다.',
 						timeout: 2000,
 						actionText: 'done',
 						actionHandler: null,
@@ -377,6 +402,8 @@ $(document).ready(function() {
 			document.body.innerText = 'There was an error injecting script : \n' + chrome.extension.lastError.message;
 		}
 	});
+
+	function setFocusOnLoad() {}
 
 });
 

@@ -3,7 +3,7 @@
  */
 
 define(["text!/html/template/history-list.hbs",
-    "/js/lib/handlebars-v4.0.5.js", "underscore", "moment"], function (LIST_TEMPLATE, Handlebars, _, moment) {
+    "/js/lib/handlebars-v4.0.5.js", "moment", "underscore", "underscore.string"], function (LIST_TEMPLATE, Handlebars, moment, _, _s) {
 
     "use strict";
 
@@ -37,7 +37,7 @@ define(["text!/html/template/history-list.hbs",
 
             order['srl'] = entity.orderSrl;
             order['book'] = entity.book;
-            order['price'] = entity.price;
+            order['price'] = _s.numberFormat(entity.price)
             order['regDate'] = entity.regDttm;
             order['updateDate'] = entity.updDttm;
 
@@ -48,8 +48,10 @@ define(["text!/html/template/history-list.hbs",
                     break;
                 case 2:
                 case 3:
-                case 4:
                     entity.status['icon'] = 'local_shipping';
+                    break;
+                case 4:
+                    entity.status['icon'] = 'directions_run';
                     break;
                 case 5:
                     entity.status['icon'] = 'done';
